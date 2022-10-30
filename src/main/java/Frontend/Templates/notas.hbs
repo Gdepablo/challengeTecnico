@@ -1,0 +1,27 @@
+{{# partial "titulo" }}
+    <title>Notas App</title>
+{{/partial}}
+
+{{# partial "contenido" }}
+    <section class="fondo-gris">
+        <h2>Nuestras Consultoras</h2>
+
+        <p>A continuación un listado de nuestras consultoras más importantes</p>
+
+        <form action="/notas" method="GET">
+            Buscar por nombre:
+            <input type="text" name="filtro" placeholder="Ingrese el id de la nota a buscar">
+
+            <input type="submit" value="Buscar">
+        </form>
+
+        <ul>
+            {{#notas}}
+                <li><a href="notas/{{id}}">{{titulo}}</a></li>
+            {{/notas}}
+        </ul>
+
+    </section>
+{{/partial}}
+
+{{> layout.hbs }}

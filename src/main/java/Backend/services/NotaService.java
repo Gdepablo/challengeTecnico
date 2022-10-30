@@ -15,5 +15,4 @@ public interface NotaService {
 
     public void removerCategoria(int id, String categoria);
 
-    //TODO: Averiguar si saveall guarda un elemento tambien o solo dos o mas en una lista
 }

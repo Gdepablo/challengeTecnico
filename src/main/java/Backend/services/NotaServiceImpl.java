@@ -1,5 +1,6 @@
 package Backend.services;
 import Backend.component.Nota;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import Backend.repository.NotasRepository;
 
@@ -19,11 +20,10 @@ public class NotaServiceImpl implements NotaService {
         Optional<Nota> notas = notasRepository.findById(id);
         return notas.stream().toList().get(0); //Pasamanos para sacarme el optional del JPARepository
     }
-
     @Override
     public List<Nota> getAllNotasActivas() {
         return notasRepository.findAll().stream().filter(nota -> nota.estaActiva()).toList();
-    } //Para las archivadas, basta con negar este metodo
+    }
 
     public List<Nota> getAllNotasArchivadas() {
         return notasRepository.findAll().stream().filter(nota -> !nota.estaActiva()).toList();
@@ -61,9 +61,22 @@ public class NotaServiceImpl implements NotaService {
         this.delete(nota);
     }
 
+    public void actualizarNota(@NotNull Nota nuevaNota) {
+        Nota nota = this.getNotasById(nuevaNota.getId());
+        if (nota != null) {
+            nota.cambiarTitulo(nuevaNota.getTitulo());
+            nota.actualizarContenido(nuevaNota.getContenido());
+            nota.agregarMuchasCategorias(nuevaNota.verCategorias());        }
+
+        else {
+            nota = new Nota(nuevaNota.getTitulo(), nuevaNota.getContenido());
+            nota.agregarMuchasCategorias(nuevaNota.verCategorias());
+        }
+
+        notasRepository.save(nota);
+    }
+
     private void delete(Nota nota) {
         notasRepository.delete(nota);
     }
-
-    //TODO: Hacer una especie de on-click que al momento de clickear el boton sea tipo onClick(save (o delete) a la nota)
 }

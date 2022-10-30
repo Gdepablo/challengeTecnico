@@ -21,7 +21,7 @@ public class NotasCRUDController {
         this.service= service;
     }
 
-    @PostMapping("/nueva")
+    @PostMapping("/nueva") heroku logs --tail --app your_app_name
     public ResponseEntity<Nota> nuevaNota(@RequestBody Nota nota) {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

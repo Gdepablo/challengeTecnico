@@ -1,5 +1,5 @@
 import express from "express";
-import exphbs from "express-handlebars";
+
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 

@@ -9,4 +9,10 @@
     "express-session": "^1.17.3",
     "method-override": "^3.0.0",
 
+    "scripts": {
+      "start": "node index.js",
+      "build": "webpack",
+      "heroku-postbuild": "echo Skip build on Heroku"
+    }
+
 }}

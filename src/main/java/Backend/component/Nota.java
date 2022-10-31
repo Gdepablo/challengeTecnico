@@ -27,6 +27,15 @@ public class Nota {
 
     }
 
+    @Override
+    public String toString() {
+            return "Educacion{"+ "id=" + id +
+                    ", title" + title +
+                    ", content=" + content +
+                    ", active=" + active +
+                    ", category=" + category + " }";
+        }
+
     public Nota getNota() {
         return this;
     }

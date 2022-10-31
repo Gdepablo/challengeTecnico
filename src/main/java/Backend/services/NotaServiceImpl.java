@@ -15,11 +15,15 @@ public class NotaServiceImpl implements NotaService {
     }
 
 
+    public void agregarNota(Nota nota) {
+        this.save(nota);
+    }
     @Override
     public Nota getNotasById(int id) {
         Optional<Nota> notas = notasRepository.findById(id);
         return notas.stream().toList().get(0); //Pasamanos para sacarme el optional del JPARepository
     }
+
     @Override
     public List<Nota> getAllNotasActivas() {
         return notasRepository.findAll().stream().filter(nota -> nota.estaActiva()).toList();
@@ -52,9 +56,7 @@ public class NotaServiceImpl implements NotaService {
         Nota nota = getNotasById(id);
         nota.quitarCategoria(categoria);
     }
-    public void guardarNota(Nota nota) {
-    this.save(nota);
-}
+
 
     public void borrarNota(int id) {
         Nota nota = getNotasById(id);

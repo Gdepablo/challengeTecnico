@@ -6,3 +6,5 @@ Para correr localmente el proyecto se necesita
 Ultima versión conocida de Maven
 JDK 17 o superior
 Spring boot es una dependencia manejada por maven, por lo cual no es necesario instalar
+Hay conflicto con node y heroku.
+Correr localmente usando mvn spring-boot:run

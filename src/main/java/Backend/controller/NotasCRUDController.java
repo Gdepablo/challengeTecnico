@@ -1,10 +1,10 @@
 package Backend.controller;
 
-import Backend.component.Nota;
+import Backend.component.Notes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import Backend.services.NotaServiceImpl;
+import Backend.services.NoteServiceImpl;
 import spark.ModelAndView;
 
 import java.util.HashMap;
@@ -14,28 +14,28 @@ import java.util.Map;
 @RestController
 @RequestMapping("/notas")
 public class NotasCRUDController {
-    private final NotaServiceImpl service;
+    private final NoteServiceImpl service; //TODO FIX CONTROLLER. Y esto creo que es un autowired.
 
 
-    public NotasCRUDController(NotaServiceImpl service) {
+    public NotasCRUDController(NoteServiceImpl service) {
         this.service= service;
     }
 
     @PostMapping("/nueva")
-    public ResponseEntity<Nota> nuevaNota(@RequestBody Nota nota) {
+    public ResponseEntity<Notes> nuevaNota(@RequestBody Notes note) {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/borrar/{id}")
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Nota> borrarNota(@PathVariable int id) {
+    public ResponseEntity<Notes> borrarNota(@PathVariable int id) {
        service.borrarNota(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Nota> actualizarNota(@PathVariable int id) {
-        Nota unaNota = service.getNotasById(id);
+    public ResponseEntity<Notes> actualizarNota(@PathVariable int id) {
+        Notes unaNota = service.getNotesById(id);
         service.actualizarNota(unaNota);
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -43,35 +43,35 @@ public class NotasCRUDController {
 
     @PostMapping("/archivar")
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Nota> archivarNota(@PathVariable int id) {
-        service.archivarNota(id);
+    public ResponseEntity<Notes> archivarNota(@PathVariable int id) {
+        service.archiveNote(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ExceptionHandler(NullPointerException.class)
     @PostMapping("/desarchivar")
-    public ResponseEntity<Nota> desarchivarNota(@PathVariable int id) {
-        service.desarchivarNota(id);
+    public ResponseEntity<Notes> desarchivarNota(@PathVariable int id) {
+        service.unarchiveNote(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/activas")
-    public ResponseEntity<List<Nota>> notasActivas() {
-        return new ResponseEntity<>(service.getAllNotasActivas(), HttpStatus.OK);
+    public ResponseEntity<List<Notes>> notasActivas() {
+        return new ResponseEntity<>(service.getAllActiveNotes(), HttpStatus.OK);
     }
 
     @GetMapping("/archivadas")
-    public ResponseEntity<List<Nota>> notasArchivadas() {
-        return new ResponseEntity<>(service.getAllNotasArchivadas(), HttpStatus.OK);
+    public ResponseEntity<List<Notes>> notasArchivadas() {
+        return new ResponseEntity<>(service.getAllActiveNotes(), HttpStatus.OK);
     }
     @PostMapping({"/categoria/{id}"})
-    public ResponseEntity<Nota> agregarCategoria(@RequestBody String categoria, @PathVariable int id) {
-        service.agregarCategoria(id, categoria);
+    public ResponseEntity<Notes> agregarCategoria(@RequestBody String category, @PathVariable int id) {
+        service.agregarCategoria(id, category); //TODO: FIX
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping({"/categoria/{id}"})
-    public ResponseEntity<Nota> quitarCategoria(@RequestBody String categoria, @PathVariable int id) {
+    public ResponseEntity<Notes> quitarCategoria(@RequestBody String categoria, @PathVariable int id) {
         service.removerCategoria(id, categoria);
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -79,7 +79,7 @@ public class NotasCRUDController {
 
     public ModelAndView getAllNotasActivas() {
         Map<String, Object> modelo = new HashMap<>();
-        modelo.put("notasActivas",service.getAllNotasActivas());
+        modelo.put("notasActivas",service.getAllActiveNotes());
         return new ModelAndView(modelo,"notas.hbs");
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-public class Nota {
+public class Notes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
@@ -22,24 +22,33 @@ public class Nota {
     String content;
     Boolean active = true; // true si está activo, false si está archivado
     @OneToMany
-    List<Categoria> category = new ArrayList<>();
+    List<Category> categories = new ArrayList<>();
 
-    public Nota(String content, String title) {
+    public Notes(String content, String title) {
         this.content = content;
         this.title = title;
     }
 
-    public boolean estaActiva(Nota nota) {
+    public boolean estaActiva(Notes nota) {
         return nota.getActive();
     }
 
-    public void agregarCategoria(Categoria categoria) {
-        category.add(categoria);
+    public void addCategory(Category categoria) {
+        categories.add(categoria);
     }
 
-    public void quitarCategoria(Categoria categoria) {
-        category.remove(categoria);
-    } //TODO: Esto no va en notas, va en IServiceImpl o sea la impl del servicio.
+    public void removeCategory(Category category) {
+        categories.remove(category);
+    } //Getters y setters está bien que estén acá.
+
+    public void addCategories(List<Category> categories) {
+        categories.addAll(categories);
+    }
+
+    public void removeCategories(List<Category> categories) {
+        categories.removeAll(categories);
+    }
+
 
     //Uso el data de Lombok para evitar poner getters y setters (reduce codigo boilerplate)
     //TODO:Posible unificar el idioma pero es un detalle

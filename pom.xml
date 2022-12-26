@@ -37,10 +37,12 @@
 		<artifactId>spring-boot-starter</artifactId>
 	</dependency>
 
+
 	<dependency>
-		<groupId>com.sparkjava</groupId>
-		<artifactId>spark-template-handlebars</artifactId>
-		<version>2.7.1</version>
+		<groupId>org.modelmapper</groupId>
+		<artifactId>modelmapper</artifactId>
+		<version>3.1.1</version>
+		<type>jar</type>
 	</dependency>
 
 	<dependency>

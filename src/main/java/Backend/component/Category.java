@@ -12,10 +12,14 @@ import javax.persistence.Id;
 @Entity
 @Data
 @NoArgsConstructor
-public class Categoria {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String tag;
+
+    public Category(String tag) {
+        this.tag = tag;
+    }
 
 }

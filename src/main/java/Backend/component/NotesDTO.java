@@ -18,24 +18,4 @@ public class NotesDTO implements Serializable {
     String content;
     Boolean active = true;
     List<Category> categories = new ArrayList<>();
-
-    public boolean estaActiva(Notes note) {
-        return note.getActive();
-    }
-
-    public void agregarCategoria(Category category) {
-        categories.add(category);
-    }
-
-    public void quitarCategoria(Category category) {
-        categories.remove(category);
-    }
-
-    public void agregarMuchasCategorias(List<Category> categories) {
-        this.categories.addAll(categories);
-    }
-
-    public void quitarMuchasCategorias(List<Category> categories) {
-        this.categories.removeAll(categories);
-    }
 }

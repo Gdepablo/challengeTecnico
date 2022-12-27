@@ -1,7 +1,6 @@
 package Backend.controller;
 
-
-import Backend.repository.NotasRepository;
+import Backend.repository.NotesRepository;
 import spark.ModelAndView;
 
 import java.time.LocalDate;
@@ -9,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HomeController {
-    NotasRepository repo;
+    NotesRepository repo;
 
     public ModelAndView getHome() {
         Map<String, Object> modelo = new HashMap<>();

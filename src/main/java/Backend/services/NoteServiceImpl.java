@@ -5,7 +5,6 @@ import Backend.component.NotesDTO;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import Backend.repository.NotesRepository;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
-    @Transactional(readOnly = true) //Solo lectura.
     public NotesDTO getNotesById(int id) {
         Optional<Notes> notes = notesRepository.findById(id);
         Optional<NotesDTO> note = notes.map(this::convertToNotesDTO); //Mapeo para convertir de Notes a NotesDTO
@@ -36,7 +34,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    @Transactional(readOnly = true) //Solo lectura.
     public List<NotesDTO> findAllActive() {
         List<Notes> listToMap = notesRepository.findAllActive();
        return listToMap.stream().map(this::convertToNotesDTO).toList();
@@ -53,7 +50,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    @Transactional(readOnly = true) //Solo lectura.
     public List<NotesDTO> findAllArchived() {
         List<Notes> listToMap = notesRepository.findAllArchived();
         return listToMap.stream().map(this::convertToNotesDTO).toList();
@@ -80,7 +76,6 @@ public class NoteServiceImpl implements NoteService {
         return MHelpers.modelMapper().map(note, Notes.class);
     }
 
-    @Transactional
     @Override
     public void save(NotesDTO note) {
         Notes newNote = this.convertToNotes(note);
@@ -102,7 +97,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
-    @Transactional
     @Override
     public void updateNote(@NotNull NotesDTO newNote) {
         Optional<Notes> note = notesRepository.findById(newNote.getId()); // busco en la DB la nota a ver si existe.

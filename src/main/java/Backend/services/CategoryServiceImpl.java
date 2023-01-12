@@ -6,12 +6,9 @@ import Backend.component.CategoryDTO;
 import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import Backend.repository.CategoryRepository;
-import Backend.repository.NotesRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public void addCategory(int noteID, Category category) {
        Notes note = this.convertToNotes(noteService.getNotesById(noteID));
        note.addCategory(category);
@@ -59,7 +55,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public void removeCategory(int id, Category category) {
         Notes note = this.convertToNotes(noteService.getNotesById(id));
         note.removeCategory(category);

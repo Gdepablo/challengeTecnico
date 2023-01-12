@@ -105,9 +105,11 @@
 		<scope>provided</scope>
 	</dependency>
 
-
-
-
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+	</dependency>
+<!-- con esta dependencia spring maneja toodo, y yo no tengo que crear una config file -->
 
 </dependencies>
 

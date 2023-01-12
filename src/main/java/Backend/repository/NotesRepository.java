@@ -17,11 +17,11 @@ public interface NotesRepository extends CrudRepository<Notes,Integer>
 {
 //No pongo findByID porque viene por defecto.
 
-@Query("select n from #{Nota} n where n.active = true")
+@Query("select n from Notes n where n.active = true")
 @Transactional(readOnly = true)
 List<Notes> findAllActive();
 
-@Query("select n from #{Nota} n where n.active = false")
+@Query("select n from Notes n where n.active = false")
 @Transactional(readOnly = true)
 List<Notes> findAllArchived();
 

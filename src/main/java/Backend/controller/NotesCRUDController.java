@@ -6,6 +6,7 @@ import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import Backend.services.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +17,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("*") //Desconozco para qué es.
+//@CrossOrigin("*") //Según GPT ai es para poder tomar datos , por ej si mi pag web está en google.com, de api.google.com. Es seguro sólo en app publicas
 @RestController
 @RequestMapping("/notes")
 public class NotesCRUDController {
 
-    @Autowired
-    private final NoteServiceImpl service;
 
-    @Autowired
+    private final NoteServiceImpl service;
     private final CategoryServiceImpl categoryService;
 
-
+    @Autowired
     public NotesCRUDController(NoteServiceImpl service, CategoryServiceImpl categoryService) {
         this.service= service;
         this.categoryService = categoryService;
@@ -35,7 +34,7 @@ public class NotesCRUDController {
     //https://stackoverflow.com/questions/34580033/spring-io-autowired-the-blank-final-field-may-not-have-been-initialized
 
     @PostMapping("/new")
-    public ResponseEntity<Notes> newNote(@RequestBody Notes note) {
+    public ResponseEntity<Notes> newNote(@RequestBody Notes note) { //El request body es importante para poder recibir la nota.
         NotesDTO aNote = MHelpers.modelMapper().map(note,NotesDTO.class);
         service.save(aNote);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -49,11 +48,17 @@ public class NotesCRUDController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Notes> updateNote(@PathVariable int id) {
-        NotesDTO note = MHelpers.modelMapper().map(service.getNotesById(id), NotesDTO.class);
-        service.updateNote(note);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Notes> updateNote(@PathVariable int id, @RequestBody Notes aNote) {
+        NotesDTO noteDTO = service.getNotesById(id);
+        if (noteDTO == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        // update note
+        service.updateNote(noteDTO);
 
+        Notes updatedNote = MHelpers.modelMapper().map(noteDTO,Notes.class);
+        // map Note to NoteDTO
+        return new ResponseEntity<>(updatedNote, HttpStatus.OK);
     }
 
     @PostMapping("/archive/{id}")
@@ -92,24 +97,11 @@ public class NotesCRUDController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
-    @GetMapping(value="/active",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView getAllActiveNotes() {
+    /* ModelAndView getAllActiveNotes() {
         Map<String, Object> model = new HashMap<>();
+        @Query("SELECT n FROM Notes n WHERE n.active = true")
         model.put("activeNotes",service.findAllActive());
-        return new ModelAndView(model,"notes.hbs");
-    }
-    @GetMapping(value="/home")
-    public ModelAndView getForm() {
-        return new ModelAndView(null, "new-note.hbs");
-    }
-
-    //Tengo que investigar bien el tema de Thyrmleaf y/o handlebars, no sé si vale la pena porque spark y spring no funcionan bien.
-    //Sé q se puede hbs con spring pero capaz es mejor el otro.
-    //Revisar tema handlebars, faltan vistas, y no sé si no faltan métodos de get y post tambien
-
-    //TODO: Fix routes, no me queda del todo claro cuál sería get y cuál post en este caso.
-    //https://www.youtube.com/watch?v=TWtdxmWYsFA&list=PLRHPC9shBXl1Jhb2XfxUEjjUMKcYM9odm&index=9
-    //Mirar el video, estoy pensando en si realmente vale la pena el userRequest o no, la verdad no sé. Además averiguar combinar spark y spring y tal.
-    //EDIT: En realidad no sé cómo pegarle a las handlebars desde spring, no significa que las routes estén mal.
+        return new ModelAndView(model,"notes.hbs"); //TODO: Esto esta mal...
+    }*/
 
 }

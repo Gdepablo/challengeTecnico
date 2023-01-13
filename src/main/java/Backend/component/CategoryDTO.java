@@ -2,23 +2,19 @@ package Backend.component;
 
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
 public class CategoryDTO implements Serializable { //No se persiste no es necesario anotaciones de hibernate.
 
-    Long id;
-    String tag;
+    private int id;
+    private String tag;
+    private List<Notes> notes = new ArrayList<>();
 
-    public CategoryDTO(String tag) {
-        this.tag = tag;
-    }
+    //NO LLEVA CONSTRUCTOR, SE OCUPA EL DATA DE LOMBOK. SI LE PONGO CONSTRUCTOR EL NO ARGS CONSTRUCTOR NO LO TOMA.
 
 }

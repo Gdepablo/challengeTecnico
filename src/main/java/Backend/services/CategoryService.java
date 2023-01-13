@@ -2,7 +2,7 @@ package Backend.services;
 
 import Backend.component.Category;
 import Backend.component.CategoryDTO;
-import Backend.component.Notes;
+import Backend.component.NotesDTO;
 import org.springframework.stereotype.Service;
 
 
@@ -16,9 +16,18 @@ public interface CategoryService {
 
     public void addCategory(int id, Category category);
 
-    public void removeCategory(int id, Category category);
+    public void removeCategory(int id, int idCategory);
 
     CategoryDTO findByTag(String tag);
+
+    public CategoryDTO getCategoryById(int id);
+
+    void save(CategoryDTO category);
+
+    void deleteById(int id); //Public redundante en interfaces
+
+    public void saveAll(List<CategoryDTO> categoryDTOS);
+
 
     //La persistencia no es responsabilidad de esta interfaz, es del repo.
 }

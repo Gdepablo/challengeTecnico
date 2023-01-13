@@ -16,41 +16,40 @@ public class Notes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    int id;
+    private int id;
     @Size(max = 255)
-    String title;
+    private String title;
     @Size(max = 5000)
-    String content;
-    Boolean active = true; // true si está activo, false si está archivado
-    @OneToMany
-    List<Category> categories = new ArrayList<>();
+    private String content;
+    private Boolean active = true; // true si esta activo, false si esta archivado
+    @ManyToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
+    @JoinTable(name = "note_X_category",
+            joinColumns = @JoinColumn(name = "note_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories = new ArrayList<>();
 
     public Notes(String content, String title) {
         this.content = content;
         this.title = title;
     }
 
-    public boolean estaActiva(Notes nota) {
-        return nota.getActive();
+    public void addCategory(Category newCategory) {
+        this.categories.add(newCategory);
     }
 
-    public void addCategory(Category categoria) {
-        categories.add(categoria);
+    public void removeCategory(Category categoryForRemoval) {
+        this.categories.remove(categoryForRemoval);
+    } //Getters y setters esta bien que esten acá.
+
+    public void addCategories(List<Category> newCategories) {
+        this.categories.addAll(newCategories);
     }
 
-    public void removeCategory(Category category) {
-        categories.remove(category);
-    } //Getters y setters está bien que estén acá.
-
-    public void addCategories(List<Category> categories) {
-        categories.addAll(categories);
-    }
-
-    public void removeCategories(List<Category> categories) {
-        categories.removeAll(categories);
+    public void removeCategories(List<Category> categoriesForRemoval) {
+        this.categories.removeAll(categoriesForRemoval);
     }
 
 
     //Uso el data de Lombok para evitar poner getters y setters (reduce codigo boilerplate)
-    //TODO:Posible unificar el idioma pero es un detalle
+
 }

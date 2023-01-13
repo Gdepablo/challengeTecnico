@@ -1,7 +1,9 @@
 package Backend.services;
+import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
 import Backend.component.Notes;
 import Backend.component.NotesDTO;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,10 +14,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Data
 public class NoteServiceImpl implements NoteService {
 
+
+    private final NotesRepository notesRepository;
+
     @Autowired
-    private NotesRepository notesRepository;
+    public NoteServiceImpl(NotesRepository notesRepository) {
+        this.notesRepository = notesRepository;
+    }
 
 
     @Override
@@ -25,12 +33,20 @@ public class NoteServiceImpl implements NoteService {
         return this.noOptionalNoteDTO(note);
     }
 
-    public NotesDTO noOptionalNoteDTO(Optional<NotesDTO> note) {
-        return note.stream().toList().get(0); //Pasamanos para sacarme el optional del JPARepository
+    public NotesDTO noOptionalNoteDTO(@NotNull Optional<NotesDTO> note) {
+        if(note.isPresent())
+            return note.get(); //Para sacarme el optional
+        else {
+            throw new NotFoundException("Note not found");
+        }
     }
 
-    public Notes noOptionalNote(Optional<Notes> note) {
-        return note.stream().toList().get(0);
+    public Notes noOptionalNote(@NotNull Optional<Notes> note) {
+        if(note.isPresent())
+            return note.get();
+        else {
+            throw new NotFoundException("Note not found");
+        }
     }
 
     @Override
@@ -42,10 +58,9 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NotesDTO> findAll() {
         Iterable<Notes> notes = notesRepository.findAll();
-        List<Notes> iterableToList = new ArrayList<Notes>();
+        List<Notes> iterableToList = new ArrayList<>();
         notes.forEach(iterableToList::add);
-        List<NotesDTO> notesToRetrieve = iterableToList.stream().map(this::convertToNotesDTO).toList();
-        return notesToRetrieve;
+        return iterableToList.stream().map(this::convertToNotesDTO).toList();
 
     }
 
@@ -60,12 +75,14 @@ public class NoteServiceImpl implements NoteService {
         NotesDTO note = this.getNotesById(id);
         Notes newNote = this.convertToNotes(note);
         newNote.setActive(false);
+        notesRepository.save(newNote); //Importante para que guarde el actualizado c:
     }
     @Override
     public void unarchiveNote(int id) {
         NotesDTO note = this.getNotesById(id);
         Notes newNote = this.convertToNotes(note);
         newNote.setActive(true);
+        notesRepository.save(newNote);
         //TODO: En el model, lo que deberíamos hacer es filtrar por activas y eso parecido a lo de vinculaciones del TP de DDS.
     }
     public NotesDTO convertToNotesDTO(final Notes note) {
@@ -84,7 +101,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void saveAll(List<NotesDTO> notesDTO) {
+    public void saveAll(@NotNull List<NotesDTO> notesDTO) {
         List<Notes> newNotes = notesDTO.stream().map(this::convertToNotes).toList();
         this.notesRepository.saveAll(newNotes);
     }
@@ -98,20 +115,16 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
-    public void updateNote(@NotNull NotesDTO newNote) {
-        Optional<Notes> note = notesRepository.findById(newNote.getId()); // busco en la DB la nota a ver si existe.
-        if (note != null) { //Mi idea acá es que si la nota no existe en la DB devuelva null, pero no sé bien si funciona.
-            Notes noOptionalNote = this.noOptionalNote(note);
-            noOptionalNote.setTitle(newNote.getTitle());
-            noOptionalNote.setContent(newNote.getContent());
-            noOptionalNote.addCategories(newNote.getCategories());
-            notesRepository.save(noOptionalNote);}
-
+    public void updateNote(int id, @NotNull NotesDTO newNote) { //ID de la nota activa.
+        Optional<Notes> note = notesRepository.findById(id);
+        if(note.isEmpty()) {throw new NotFoundException("Note not found");}
         else {
-            Notes noteToCreate;
-            noteToCreate = new Notes(newNote.getTitle(), newNote.getContent());
-            noteToCreate.addCategories(newNote.getCategories());
-            notesRepository.save(noteToCreate);
-        }
-    }
-}
+        Notes noOptionalNote = noOptionalNote(note);
+        noOptionalNote.setTitle(newNote.getTitle());
+        noOptionalNote.setContent(newNote.getContent());
+        noOptionalNote.addCategories(newNote.getCategories());
+        notesRepository.save(noOptionalNote);
+    }}}
+
+
+//WARNING: TODO: Las tildes rompen el debug, no usar tildes pq crashea maven.

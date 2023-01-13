@@ -29,11 +29,11 @@ public interface NoteService {
 
     void deleteById(int id); //Public redundante en interfaces
 
-    void updateNote(@NotNull NotesDTO newNote);
+    void updateNote(int id,@NotNull NotesDTO newNote);
 
 
-    //Tenemos que pensar en la nota sólo como almacenamiento, igual que el DTO es un objeto de transición para no revelar
-    //Mi dominio (o sea cómo modelé la nota en este caso) al usuario o a algún vivo. Entonces por eso usamos el DTO y por eso
+    //Tenemos que pensar en la nota solo como almacenamiento, igual que el DTO es un objeto de transicion para no revelar
+    //Mi dominio (o sea como modele la nota en este caso) al usuario o a algun vivo. Entonces por eso usamos el DTO y por eso
     //es que hacemos que el repositorio se encargue de toodo.
 
 }

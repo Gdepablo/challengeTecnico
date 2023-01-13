@@ -30,7 +30,7 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     } //Esto es para asociar la categoria a una nota. OK.
 
-    @DeleteMapping({"delete/{idCategory}"})
+    @DeleteMapping({"/delete/{idCategory}"})
     public ResponseEntity<Notes> removeCategory(@PathVariable int idCategory, @PathVariable int noteId) {
         categoryService.removeCategory(noteId, idCategory);
         return new ResponseEntity<>(HttpStatus.OK);

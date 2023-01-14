@@ -17,7 +17,8 @@ public class Notes {
     private int id;
     @Size(max = 255)
     private String title;
-    @Size(max = 5000)
+    @Size(max = 5000) //El size solo se valida al momento de la creacion.
+    // Si al actualizar se supera el contenido entonces no pasa nada. O sea, que no limita el update
     private String content;
     private Boolean active = true; // true si esta activo, false si esta archivado
     @ManyToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)

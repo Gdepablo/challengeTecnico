@@ -1,10 +1,8 @@
 package Backend.controller;
 
-import Backend.Helper.MHelpers;
-import Backend.component.Category;
+import Backend.Exceptions.NotFoundException;
+import Backend.Exceptions.RequestBodyIsNullException;
 import Backend.component.CategoryDTO;
-import Backend.component.Notes;
-import Backend.component.NotesDTO;
 import Backend.services.CategoryServiceImpl;
 import Backend.services.NoteServiceImpl;
 import lombok.Data;
@@ -28,11 +26,14 @@ public class CategoryController {
     }
 
    @PostMapping({"/new"})
-    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable int noteId) {
-        NotesDTO note = service.getNotesById(noteId);
+    public ResponseEntity<CategoryDTO> addCategory(@RequestBody(required = false) CategoryDTO categoryDTO, @PathVariable int noteId) {
+
+       if (categoryDTO == null) {
+           throw new RequestBodyIsNullException("Request body is null");
+       }
         categoryService.addCategory(noteId,categoryDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    } //Esto es para asociar la categoria a una nota. OK.
+    } //Esto es para asociar la categoria a una nota. OK. OK VALIDACIONES.
 
 
     @DeleteMapping({"/delete/{idCategory}"})
@@ -40,5 +41,7 @@ public class CategoryController {
         categoryService.removeCategory(noteId, idCategory);
         return new ResponseEntity<>(HttpStatus.OK);
 
-    } //OK.
+    } //OK. OK VALIDACIONES.
+
+    //Podria poner para mostrar todas las categorias pero meeh. Es lo mismo solo q con GetMapping y eso.
 }

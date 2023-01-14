@@ -8,9 +8,9 @@ import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import Backend.repository.CategoryRepository;
 import lombok.Data;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -21,12 +21,18 @@ import java.util.Optional;
 @Data
 public class CategoryServiceImpl implements CategoryService {
 
+    private final NoteServiceImpl noteService;
+    private final CategoryRepository categoryRepo;
+
     @Autowired
-    NoteServiceImpl noteService;
-    @Autowired
-    private CategoryRepository categoryRepo;
+    public CategoryServiceImpl(NoteServiceImpl noteService, CategoryRepository categoryRepo) {
+
+        this.noteService = noteService;
+        this.categoryRepo = categoryRepo;
+    }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> getAllCategories() {
 
         Iterable<Category> category = categoryRepo.findAll();
@@ -85,10 +91,11 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = this.convertToCategory(this.getCategoryById(idCategory));
         note.removeCategory(category);
         deleteById(idCategory); //No sé si corresponde que al removerla se borre.
-        NotesDTO noteToPass = this.convertToNotesDTO(note);
+        NotesDTO noteToPass = this.convertToNotesDTO(note); //Rompe tanto si no existe categoria como si no existe la nota.
         noteService.save(noteToPass);
     }
     @Override
+    @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(int id) {
         Optional<Category> categoryOptional = categoryRepo.findById(id);
         Optional<CategoryDTO> categoryDTO = categoryOptional.map(this::convertToCategoryDTO); //Mapeo para convertir de Notes a NotesDTO
@@ -97,6 +104,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDTO findByTag(String name) {
        Optional<Category> categoryPure = categoryRepo.findByTag(name);
        return this.convertToCategoryDTO(categoryPure.stream().toList().get(0));

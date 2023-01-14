@@ -5,10 +5,10 @@ import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import Backend.repository.NotesRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public NotesDTO getNotesById(int id) {
         Optional<Notes> notes = notesRepository.findById(id);
         Optional<NotesDTO> note = notes.map(this::convertToNotesDTO); //Mapeo para convertir de Notes a NotesDTO
@@ -51,12 +52,14 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NotesDTO> findAllActive() {
         List<Notes> listToMap = notesRepository.findAllActive();
        return listToMap.stream().map(this::convertToNotesDTO).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NotesDTO> findAll() {
         Iterable<Notes> notes = notesRepository.findAll();
         List<Notes> iterableToList = new ArrayList<>();
@@ -66,6 +69,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NotesDTO> findAllArchived() {
         List<Notes> listToMap = notesRepository.findAllArchived();
         return listToMap.stream().map(this::convertToNotesDTO).toList();
@@ -121,11 +125,11 @@ public class NoteServiceImpl implements NoteService {
         if(note.isEmpty()) {throw new NotFoundException("Note not found");}
         else {
         Notes noOptionalNote = noOptionalNote(note);
-        noOptionalNote.setTitle(newNote.getTitle());
-        noOptionalNote.setContent(newNote.getContent());
+        noOptionalNote.setTitle(noOptionalNote.getTitle() + newNote.getTitle());
+        noOptionalNote.setContent(noOptionalNote.getContent() +newNote.getContent());
         noOptionalNote.addCategories(newNote.getCategories());
         notesRepository.save(noOptionalNote);
     }}}
 
 
-//WARNING: TODO: Las tildes rompen el debug, no usar tildes pq crashea maven.
+//WARNING: Las tildes rompen el debug, no usar tildes pq crashea maven.

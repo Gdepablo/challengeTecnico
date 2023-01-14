@@ -2,8 +2,8 @@ package Backend;
 
 import org.springframework.boot.SpringApplication;
 
-
-@org.springframework.boot.autoconfigure.SpringBootApplication(scanBasePackages = {"Backend.controller","Backend"})
+//Parece que funciona sin el scanBasePackages entonces se lo saco.
+@org.springframework.boot.autoconfigure.SpringBootApplication
 public class SpringBootApplication {
 
     public static void main(String[] args) {

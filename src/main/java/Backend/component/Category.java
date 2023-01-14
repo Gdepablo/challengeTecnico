@@ -18,7 +18,7 @@ public class Category {
     private int id;
     private String tag;
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore
+    @JsonIgnore //Para que no haya recursion infinita.
     private List<Notes> notes = new ArrayList<>();
 
 }

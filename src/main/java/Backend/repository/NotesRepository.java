@@ -5,7 +5,6 @@ import Backend.component.Notes;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,11 +17,9 @@ public interface NotesRepository extends CrudRepository<Notes,Integer>
 //No pongo findByID porque viene por defecto.
 
 @Query("select n from Notes n where n.active = true")
-@Transactional(readOnly = true)
 List<Notes> findAllActive();
 
 @Query("select n from Notes n where n.active = false") //Asi sea privado el atributo, JPA usa reflexion entonces puede acceder.
-@Transactional(readOnly = true)
 List<Notes> findAllArchived();
 
 //El repo no hace logica, solo plantea los métodos abstractos q en teoria SPRING maneja. Yo en los services tengo mi logica.

@@ -5,6 +5,7 @@ import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import Backend.repository.NotesRepository;
@@ -83,14 +84,14 @@ public class NoteServiceImpl implements NoteService {
         Notes newNote = this.convertToNotes(note);
         newNote.setActive(true);
         notesRepository.save(newNote);
-        //TODO: En el model, lo que deberíamos hacer es filtrar por activas y eso parecido a lo de vinculaciones del TP de DDS.
-    }
-    public NotesDTO convertToNotesDTO(final Notes note) {
-        return MHelpers.modelMapper().map(note, NotesDTO.class);
     }
 
-    public Notes convertToNotes(final NotesDTO note) {
-        return MHelpers.modelMapper().map(note, Notes.class);
+    private Notes convertToNotes(NotesDTO notesDTO) {
+        return MHelpers.modelMapper().map(notesDTO, Notes.class);
+    }
+
+    private NotesDTO convertToNotesDTO(Notes note) {
+        return MHelpers.modelMapper().map(note, NotesDTO.class);
     }
 
     @Override

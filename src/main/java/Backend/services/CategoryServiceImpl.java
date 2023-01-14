@@ -8,6 +8,7 @@ import Backend.component.Notes;
 import Backend.component.NotesDTO;
 import Backend.repository.CategoryRepository;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    NoteService noteService;
+    NoteServiceImpl noteService;
     @Autowired
     private CategoryRepository categoryRepo;
 
@@ -35,12 +36,13 @@ public class CategoryServiceImpl implements CategoryService {
 
             }
 
-            public NotesDTO convertToNotesDTO(final Notes note) {
-                return MHelpers.modelMapper().map(note, NotesDTO.class);
-            }
-            public Notes convertToNotes(final NotesDTO note) {
-                return MHelpers.modelMapper().map(note, Notes.class);
-            }
+    private Notes convertToNotes(NotesDTO notesDTO) {
+        return MHelpers.modelMapper().map(notesDTO, Notes.class);
+    }
+
+    private NotesDTO convertToNotesDTO(Notes note) {
+        return MHelpers.modelMapper().map(note, NotesDTO.class);
+    }
             public CategoryDTO convertToCategoryDTO(final Category category) {
                 return MHelpers.modelMapper().map(category, CategoryDTO.class);
             }
@@ -49,15 +51,14 @@ public class CategoryServiceImpl implements CategoryService {
             }
 
             @Override
-            public void addCategory(int noteID, Category category) {
-               Notes note = this.convertToNotes(noteService.getNotesById(noteID));
-                NotesDTO noteToPass = this.convertToNotesDTO(note);
-                noteService.save(noteToPass);
-               note.addCategory(category);
-               //this.save(convertToCategoryDTO(category)); //TODO: Ojo a esto, por si se persiste doble.
-        noteService.save(noteToPass); //Para que se guarde con la categoria agregada
-
-    }
+            public void addCategory(int noteID, CategoryDTO category) {
+                Notes note = convertToNotes(noteService.getNotesById(noteID));
+                Category aCategory = convertToCategory(category);
+                note.addCategory(aCategory);
+                this.save(category);
+                NotesDTO noteDTO = convertToNotesDTO(note);
+                noteService.save(noteDTO);
+                }
 
     @Override
     public void save(CategoryDTO category) {

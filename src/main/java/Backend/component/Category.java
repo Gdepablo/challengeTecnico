@@ -1,6 +1,7 @@
 package Backend.component;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ public class Category {
     private int id;
     private String tag;
     @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private List<Notes> notes = new ArrayList<>();
 
 }

@@ -1,7 +1,6 @@
 package Backend.component;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name="Notes")
 public class Notes {
     @Id
@@ -28,10 +26,6 @@ public class Notes {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    public Notes(String content, String title) {
-        this.content = content;
-        this.title = title;
-    }
 
     public void addCategory(Category newCategory) {
         this.categories.add(newCategory);

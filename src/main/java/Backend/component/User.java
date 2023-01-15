@@ -1,25 +1,29 @@
 package Backend.component;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
-public class Category implements Serializable {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String tag;
-    @ManyToMany(mappedBy = "categories")
-    @JsonIgnore //Para que no haya recursion infinita.
+    @Column(unique = true,nullable = false)
+    int id;
+    private String username;
+    private String password;
+    private Date accountCreationDate = new Date();
+    @OneToMany
     private List<Note> notes = new ArrayList<>();
+
+    public void setAllNotes(List<Note> notes) {
+        this.notes.addAll(notes);
+    }
 
 }

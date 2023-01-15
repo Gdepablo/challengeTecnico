@@ -1,8 +1,6 @@
 package Backend.services;
 
-import Backend.component.Category;
 import Backend.component.CategoryDTO;
-import Backend.component.NotesDTO;
 import org.springframework.stereotype.Service;
 
 

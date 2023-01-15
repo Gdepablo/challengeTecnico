@@ -4,8 +4,8 @@ import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
 import Backend.component.Category;
 import Backend.component.CategoryDTO;
-import Backend.component.Notes;
-import Backend.component.NotesDTO;
+import Backend.component.Note;
+import Backend.component.NoteDTO;
 import Backend.repository.CategoryRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +42,12 @@ public class CategoryServiceImpl implements CategoryService {
 
             }
 
-    private Notes convertToNotes(NotesDTO notesDTO) {
-        return MHelpers.modelMapper().map(notesDTO, Notes.class);
+    private Note convertToNotes(NoteDTO noteDTO) {
+        return MHelpers.modelMapper().map(noteDTO, Note.class);
     }
 
-    private NotesDTO convertToNotesDTO(Notes note) {
-        return MHelpers.modelMapper().map(note, NotesDTO.class);
+    private NoteDTO convertToNotesDTO(Note note) {
+        return MHelpers.modelMapper().map(note, NoteDTO.class);
     }
             public CategoryDTO convertToCategoryDTO(final Category category) {
                 return MHelpers.modelMapper().map(category, CategoryDTO.class);
@@ -58,11 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
 
             @Override
             public void addCategory(int noteID, CategoryDTO category) {
-                Notes note = convertToNotes(noteService.getNotesById(noteID));
+                Note note = convertToNotes(noteService.getNotesById(noteID));
                 Category aCategory = convertToCategory(category);
                 note.addCategory(aCategory);
                 this.save(category);
-                NotesDTO noteDTO = convertToNotesDTO(note);
+                NoteDTO noteDTO = convertToNotesDTO(note);
                 noteService.save(noteDTO);
                 }
 
@@ -87,11 +87,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void removeCategory(int id, int idCategory) {
-        Notes note = this.convertToNotes(noteService.getNotesById(id));
+        Note note = this.convertToNotes(noteService.getNotesById(id));
         Category category = this.convertToCategory(this.getCategoryById(idCategory));
         note.removeCategory(category);
         deleteById(idCategory); //No sé si corresponde que al removerla se borre.
-        NotesDTO noteToPass = this.convertToNotesDTO(note); //Rompe tanto si no existe categoria como si no existe la nota.
+        NoteDTO noteToPass = this.convertToNotesDTO(note); //Rompe tanto si no existe categoria como si no existe la nota.
         noteService.save(noteToPass);
     }
     @Override

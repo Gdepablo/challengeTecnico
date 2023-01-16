@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@RepositoryRestResource(collectionResourceRel="notes")
 public class NoteDTO implements Serializable {
     //Se usa para evitar revelar el dominio; y es como que yo puedo elegir qué datos mostrar y que no
     //Por ej si mi nota tiene un Autor,y yo no lo queiro mostrar, entonces en NotasDTO no lo pongo

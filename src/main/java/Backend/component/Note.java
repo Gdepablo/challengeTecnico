@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name="Notes")
-@RepositoryRestResource( collectionResourceRel="notes") //Un chiche para cambiar el nombre del HAL explorer. No tiene nada que ver con el codigo. No funca igual.
 public class Note implements Serializable {
 
     //El serializable segun GPT Ai se usa para transformar en bytes y no se que y (poder) guardar en disco.

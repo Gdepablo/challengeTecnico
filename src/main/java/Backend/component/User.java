@@ -1,5 +1,6 @@
 package Backend.component;
 
+import Backend.Configuration.BCryptHelper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -24,6 +25,10 @@ public class User implements Serializable {
 
     public void setAllNotes(List<Note> notes) {
         this.notes.addAll(notes);
+    }
+
+    public void setPassword(String password) {
+        this.password = BCryptHelper.passwordEncoder().encode(password); //Cifra la contrasenia
     }
 
 }

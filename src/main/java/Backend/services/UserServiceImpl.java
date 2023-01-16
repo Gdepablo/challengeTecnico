@@ -3,12 +3,12 @@ package Backend.services;
 import Backend.Configuration.BCryptHelper;
 import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
-import Backend.component.Note;
-import Backend.component.NoteDTO;
-import Backend.component.User;
-import Backend.component.UserDTO;
+import Backend.component.*;
 import Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Component
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService, UserDetailsService { //El USerDetailService es una clase de
+    // Spring Security, necesaria para el metodo loadUserByUsername que basicamente te 'trae' el usuario y lo usa
+    //para hacer cosas de autenticacion.
 
     private final UserRepository userRepository;
     private final NoteServiceImpl noteService;
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService{
         User persistedUser = optionalUser.get();
         persistedUser.setUsername(aUser.getUsername());
         persistedUser.setPassword(persistedUser.getPassword());
-        persistedUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //La idea de la 54 es actualizar
+        persistedUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //La idea es actualizar
             // la contraseña del vago y ahi hashear la nueva. En este caso no concateno porque no me parece necesario o que sea lo correcto.
             persistedUser.setAllNotes(aUser.getNotes());
         this.userRepository.save(aUser);
@@ -103,6 +105,10 @@ public class UserServiceImpl implements UserService{
         } else {throw new NotFoundException("User not found");}
     }
 
+    public UserDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return convertToUserDTO(user);
+    }
     public User convertToUser(UserDTO user) {
         return MHelpers.modelMapper().map(user, User.class);
     }
@@ -111,5 +117,15 @@ public class UserServiceImpl implements UserService{
         return MHelpers.modelMapper().map(user, UserDTO.class);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDTO user = this.getUserByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("There is no user associated with the username" + username);
+        }
+        return MHelpers.modelMapper().map(user,UserPrincipal.class);
+    }
+    }
+
     //TODO: Controller de esta garcha, capaz. Aunque se va del scope.
-}
+

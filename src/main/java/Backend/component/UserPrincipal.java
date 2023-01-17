@@ -3,22 +3,18 @@ package Backend.component;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class UserPrincipal implements Serializable, UserDetails {
+public class UserPrincipal implements Serializable , UserDetails {
     int id;
     private String username;
     private String password;
-    private Date accountCreationDate = new Date();
-    private List<Note> notes = new ArrayList<>();
+    private Date accountCreationDate = new Date(); //Esta clase es solo para el login, no necesito la lista de notas.
 
 
     @Override
@@ -46,5 +42,16 @@ public class UserPrincipal implements Serializable, UserDetails {
         return false;
     }
 
-    //Tiene que implementar
+
+    public void setNotes(List<Note> notes) {
+    }
+
+    public boolean getNotes() {
+        return false;
+    }
+
+    public String getName() {
+        return "notes";
+
+    }
 }

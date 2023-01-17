@@ -5,6 +5,8 @@ import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
 import Backend.component.*;
 import Backend.repository.UserRepository;
+import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +14,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Component
-public class UserServiceImpl implements UserService, UserDetailsService { //El USerDetailService es una clase de
+public class UserServiceImpl implements UserService, UserDetailsService { //El UserDetailService es una clase de
     // Spring Security, necesaria para el metodo loadUserByUsername que basicamente te 'trae' el usuario y lo usa
     //para hacer cosas de autenticacion.
 
@@ -38,39 +42,39 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
     } //Crear usuarios y eso se re va del scope del enunciado. A lo mejor ni lo hago jaja.
 
     @Override
-    public void delete (UserDTO user) {
+    public void deleteUser (UserDTO user) {
         User aUser = this.convertToUser(user);
         this.userRepository.delete(aUser);
     }
+
     @Override
     public void deleteById(int id) {
         Optional<User> aUser = userRepository.findById(id);
 
         if (aUser.isPresent()) {
-            userRepository.save(aUser.get());
+            userRepository.delete(aUser.get());
             return;
         }
         throw new NotFoundException("User not found");
-    }
+    } //OK.
 
     @Override
-    public void update (int id,UserDTO user) {
+    public void updateUser (int id,UserDTO user) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
         User aUser = this.convertToUser(user);
         User persistedUser = optionalUser.get();
         persistedUser.setUsername(aUser.getUsername());
-        persistedUser.setPassword(persistedUser.getPassword());
-        persistedUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //La idea es actualizar
-            // la contraseña del vago y ahi hashear la nueva. En este caso no concateno porque no me parece necesario o que sea lo correcto.
+        persistedUser.setPassword(persistedUser.getPassword()); //Borro donde llamaba al passwordEncoder
+            // porque el save lo hace por mi.
             persistedUser.setAllNotes(aUser.getNotes());
-        this.userRepository.save(aUser);
+        this.userRepository.save(persistedUser);
         return;}
-        throw new NotFoundException("User not found");
+        throw new NotFoundException("User not found"); //OK.
 
     }
     @Override
-    public void addNote(int id, NoteDTO note) { //Asocia una nota nueva al usuario. TODO: Revisar. no me convence.
+    public void addUser(int id, NoteDTO note) { //Asocia una nota nueva al usuario. TODO: Revisar. no me convence.
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -82,7 +86,7 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
         throw new NotFoundException("User not found");
     }
     @Override
-    public void removeNote(int id,int noteId) {
+    public void removeUser(int id,int noteId) {
         Optional<User> optionalUser = userRepository.findById(id);
         NoteDTO note = noteService.getNotesById(noteId);
         if (optionalUser.isPresent()) {
@@ -107,6 +111,10 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
 
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
+
+        if(user == null) {
+            throw new NotFoundException("User not found");
+        }
         return convertToUserDTO(user);
     }
     public User convertToUser(UserDTO user) {
@@ -116,16 +124,54 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
     public UserDTO convertToUserDTO(User user) {
         return MHelpers.modelMapper().map(user, UserDTO.class);
     }
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserDTO> findAll() {
+            Iterable<User> users = userRepository.findAll();
+            List<User> iterableToList = new ArrayList<>();
+            users.forEach(iterableToList::add);
+            return iterableToList.stream().map(this::convertToUserDTO).toList();
+
+    }
+    @Override
+    public void addNoteToUser(int id, NoteDTO aNote) { //Logicamente hablando, lo que mas tiene sentido es guardar y borrar de
+        //uno en uno.
+        UserDTO user = this.getUserById(id);
+        User anUser = this.convertToUser(user);
+        Note note = MHelpers.modelMapper().map(aNote,Note.class);
+        anUser.getNotes().add(note);
+        save(convertToUserDTO(anUser));
+    }
+
+    @Override
+    public void deleteNoteFromUser(int id, int noteId) {
+        UserDTO user = this.getUserById(id);
+        User anUser = this.convertToUser(user);
+        List<Note> notes = user.getNotes();  //Lista de notas.
+        Stream<Note> filteredNote = notes.stream().filter(note -> note.getId() == noteId); //Consigo la nota pa borrar.
+        Note noteToRemove = filteredNote.toList().get(0); //Siempre es unico porque el id es unico entonces aca
+        // consigo la nota para borrar. el ToList es pa limpiarme el stream y el get pa obtener la nota.
+        notes.remove(noteToRemove);
+        this.save(convertToUserDTO(anUser));
+    }
+
+    /*@Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {UserDTO user = this.getUserByUsername(username);
+            return MHelpers.modelMapper().map(user,UserPrincipal.class);}
+        catch(Exception e ) {
+            throw new UsernameNotFoundException("Username "+username + " doesn't exist");
+        }
+    }*/
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDTO user = this.getUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("There is no user associated with the username" + username);
-        }
-        return MHelpers.modelMapper().map(user,UserPrincipal.class);
-    }
-    }
+       UserDTO user = this.getUserByUsername(username);
+        User anUser = convertToUser(user);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(anUser,UserPrincipal.class);
 
-    //TODO: Controller de esta garcha, capaz. Aunque se va del scope.
+    //YO pensaba en fetchType.EAGER pero es bad practice segun la IA entonces tengo que usar hibernate session.
+        }
+    }
 

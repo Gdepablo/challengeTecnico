@@ -1,7 +1,6 @@
 package Backend.component;
 
 import Backend.Configuration.BCryptHelper;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Date accountCreationDate = new Date();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL) //para que al guardar el usuario se guarden las notas tambien.
     private List<Note> notes = new ArrayList<>();
 
     public void setAllNotes(List<Note> notes) {
@@ -30,5 +29,4 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = BCryptHelper.passwordEncoder().encode(password); //Cifra la contrasenia
     }
-
 }

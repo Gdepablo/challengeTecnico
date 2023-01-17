@@ -87,7 +87,6 @@ public class NotesController {
     //Los transactional read only son para mas performance segun lei en stack overflow.
 
     //TODO: Update readme. Update bash script.
-    //TODO: login.
     //Para filtrar notas por categoria necesitaria un metodo que me traiga TODAS las notas y de ahi tirarle un contains a la lista y tal para ver el tema de si tiene la
     //categoria o no. Supongo que el tema seria traer todas las notas de la db? O tal vez traer solo la especificada. Si traigo todas despues muestro una nomas y eso es una cosa
     //de la view que es como una pavada, es parecido al tp de dds.

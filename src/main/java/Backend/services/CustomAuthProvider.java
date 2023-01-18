@@ -25,14 +25,15 @@ public class CustomAuthProvider implements AuthenticationProvider {
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
             String username = authentication.getName();
-            String password = (String) authentication.getCredentials();
+            String password = authentication.getCredentials().toString();
+
+
 
             UserDetails userDetails = userServiceImpl.loadUserByUsername(username);
-            if (userDetails == null || !userDetails.getUsername().equalsIgnoreCase(username)) {
-                throw new BadCredentialsException("Username not found.");
-            }
+            //No valido el username porque ya esta validado en otro lado.
 
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {//redefinir el matches porque no funca.
                 throw new BadCredentialsException("Wrong password.");
             }
 

@@ -3,11 +3,9 @@ package Backend.component;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class UserPrincipal implements Serializable , UserDetails {
@@ -42,16 +40,4 @@ public class UserPrincipal implements Serializable , UserDetails {
         return false;
     }
 
-
-    public void setNotes(List<Note> notes) {
-    }
-
-    public boolean getNotes() {
-        return false;
-    }
-
-    public String getName() {
-        return "notes";
-
-    }
 }

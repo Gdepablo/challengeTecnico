@@ -1,6 +1,5 @@
 package Backend.component;
 
-import Backend.Configuration.BCryptHelper;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,10 +11,6 @@ public class UserDTO implements Serializable {
     private String username;
     private String password;
     private List<Note> notes = new ArrayList<>();
-
-    public void setPassword(String password) {
-        this.password = BCryptHelper.passwordEncoder().encode(password); //Cifra la contrasenia
-    }
 
     //Segun la IA, el UserDTO es un POJO que se usa para transferir datos entre la aplicacion mientras que la clase
     //myPrincipal se usa para toodo lo relacionado con la sesion y demas, incluyendo ver si esta autenticado, los roles,etc

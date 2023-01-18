@@ -4,6 +4,7 @@ import Backend.Configuration.BCryptHelper;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,9 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     int id;
+    @Size(max = 50)
     private String username;
+    @Size(max = 100)
     private String password;
     private Date accountCreationDate = new Date();
     @OneToMany(cascade = CascadeType.ALL) //para que al guardar el usuario se guarden las notas tambien.

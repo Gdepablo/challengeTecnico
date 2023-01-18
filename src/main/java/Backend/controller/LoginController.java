@@ -1,5 +1,6 @@
 package Backend.controller;
 
+import Backend.services.CustomAuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -19,10 +20,10 @@ import javax.validation.constraints.NotBlank;
 public class LoginController{
 
 
-    private final ProviderManager providerManager;
+    private final CustomAuthProvider providerManager;
 
     @Autowired
-    public LoginController(ProviderManager providerManager) {
+    public LoginController(CustomAuthProvider providerManager) {
         this.providerManager = providerManager;
     }
 

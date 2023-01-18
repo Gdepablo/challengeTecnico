@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
         User aUser = this.convertToUser(user);
         aUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //hashea la contrasenia.
         this.userRepository.save(aUser);
-    } //Crear usuarios y eso se re va del scope del enunciado. A lo mejor ni lo hago jaja.
+    }
 
     @Override
     public void deleteUser (UserDTO user) {
@@ -65,9 +65,7 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
         User aUser = this.convertToUser(user);
         User persistedUser = optionalUser.get();
         persistedUser.setUsername(aUser.getUsername());
-        persistedUser.setPassword(persistedUser.getPassword()); //Borro donde llamaba al passwordEncoder
-            // porque el save lo hace por mi.
-            persistedUser.setAllNotes(aUser.getNotes());
+        persistedUser.setAllNotes(aUser.getNotes());
         this.userRepository.save(persistedUser);
         return;}
         throw new NotFoundException("User not found"); //OK.
@@ -155,23 +153,13 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
         this.save(convertToUserDTO(anUser));
     }
 
-    /*@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {UserDTO user = this.getUserByUsername(username);
-            return MHelpers.modelMapper().map(user,UserPrincipal.class);}
-        catch(Exception e ) {
-            throw new UsernameNotFoundException("Username "+username + " doesn't exist");
-        }
-    }*/
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //El problema evidentemente esta aca
        UserDTO user = this.getUserByUsername(username);
         User anUser = convertToUser(user);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(anUser,UserPrincipal.class);
-
-    //YO pensaba en fetchType.EAGER pero es bad practice segun la IA entonces tengo que usar hibernate session.
         }
     }
 

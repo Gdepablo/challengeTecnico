@@ -8,9 +8,9 @@ import Backend.repository.UserRepository;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+/*import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;*/
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
-public class UserServiceImpl implements UserService, UserDetailsService { //El UserDetailService es una clase de
+public class UserServiceImpl implements UserService /*, UserDetailsService*/ { //El UserDetailService es una clase de
     // Spring Security, necesaria para el metodo loadUserByUsername que basicamente te 'trae' el usuario y lo usa
     //para hacer cosas de autenticacion.
 
@@ -154,12 +154,12 @@ public class UserServiceImpl implements UserService, UserDetailsService { //El U
     }
 
 
-    @Override
+    /*@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //El problema evidentemente esta aca
        UserDTO user = this.getUserByUsername(username);
         User anUser = convertToUser(user);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(anUser,UserPrincipal.class);
-        }
+        }*/
     }
 

@@ -18,6 +18,7 @@ public class User implements Serializable {
     @Column(unique = true,nullable = false)
     int id;
     @Size(max = 50)
+    @Column(unique = true)
     private String username;
     @Size(max = 100)
     private String password;

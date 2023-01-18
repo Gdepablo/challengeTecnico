@@ -2,9 +2,7 @@ package Backend.controller;
 
 //import Backend.services.CustomAuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-/*import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+/*import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;*/
@@ -34,21 +32,15 @@ public class LoginController{
 
     @PostMapping("/login")
     public String login(@RequestParam("username") @NotBlank String username,
-                        @RequestParam("password") @NotBlank String password, Model model) {
-        if(username == null || password == null) {
-            model.addAttribute("error", "Invalid credentials");
-            return "login";
-        }
+                        @RequestParam("password") @NotBlank String password) {
         try {
             Authentication auth = providerManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
+                    new UsernamePasswordAuthenticationToken(username, password));
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return "redirect:/notes";
-        } catch (AuthenticationException e) {
-            model.addAttribute("error", "Invalid credentials");
+            return "redirect:/notes"; }
+        catch (AuthenticationException e) {
             return "login";
-        }
+        } //Sigo borrando cosas q son innecesarias.
     }
 
 }*/

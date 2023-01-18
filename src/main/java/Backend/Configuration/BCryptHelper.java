@@ -1,7 +1,9 @@
 package Backend.Configuration;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //por classpath scanning creo y es tipo como que sabe que aca hay una configuracion pa que se divierta. idk.
 public class BCryptHelper {
     @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();}
 }

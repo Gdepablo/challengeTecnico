@@ -1,25 +1,25 @@
 package Backend.services;
 
+import Backend.Configuration.BCryptHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 /*import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;*/
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
+/*@Service
 public class CustomAuthProvider implements AuthenticationProvider {
 
         private final UserServiceImpl userServiceImpl;
-        private final BCryptPasswordEncoder passwordEncoder;
+        private final BCryptPasswordEncoder passwordEncoder = BCryptHelper.passwordEncoder();
 
         @Autowired
-        public CustomAuthProvider(UserServiceImpl userServiceImpl, BCryptPasswordEncoder passwordEncoder) {
+        public CustomAuthProvider(UserServiceImpl userServiceImpl) {
             this.userServiceImpl = userServiceImpl;
-            this.passwordEncoder = passwordEncoder;
         }
 
         @Override
@@ -33,7 +33,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
             //No valido el username porque ya esta validado en otro lado.
 
 
-            if (!passwordEncoder.matches(password, userDetails.getPassword())) {//redefinir el matches porque no funca.
+                if (!passwordEncoder.matches(password, userDetails.getPassword())) {//redefinir el matches porque no funca.
                 throw new BadCredentialsException("Wrong password.");
             }
 

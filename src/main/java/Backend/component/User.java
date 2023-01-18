@@ -25,6 +25,7 @@ public class User implements Serializable {
     private Date accountCreationDate = new Date();
     @OneToMany(cascade = CascadeType.ALL) //para que al guardar el usuario se guarden las notas tambien.
     private List<Note> notes = new ArrayList<>();
+    private String salt;
 
     public void setAllNotes(List<Note> notes) {
         this.notes.addAll(notes);

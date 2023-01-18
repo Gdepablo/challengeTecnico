@@ -11,6 +11,7 @@ public class UserDTO implements Serializable {
     private String username;
     private String password;
     private List<Note> notes = new ArrayList<>();
+    private String salt;
 
     //Segun la IA, el UserDTO es un POJO que se usa para transferir datos entre la aplicacion mientras que la clase
     //myPrincipal se usa para toodo lo relacionado con la sesion y demas, incluyendo ver si esta autenticado, los roles,etc

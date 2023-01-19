@@ -1,8 +1,6 @@
 package Backend.component;
 
 import lombok.Data;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

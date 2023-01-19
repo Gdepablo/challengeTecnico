@@ -37,9 +37,7 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
     @Override
     public void save(UserDTO user) {
         User aUser = this.convertToUser(user);
-        String salt = BCrypt.gensalt();
-        aUser.setPassword(BCrypt.hashpw(user.getPassword(),salt)); //hashea la contrasenia.
-        aUser.setSalt(salt);
+        aUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //hashea la contrasenia.
         this.userRepository.save(aUser);
     }
 
@@ -164,26 +162,21 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
         if(this.checkMapping(anUser, user)) {
             UserPrincipal anotherUser = MHelpers.modelMapper().map(anUser,UserPrincipal.class);
             if(this.checkMapping(anUser, anotherUser)) {
-                System.out.println("El encargado");
                 return  MHelpers.modelMapper().map(anUser,UserPrincipal.class);
-            } else throw new UnsupportedOperationException("Fail in the second if");
+            } else throw new UnsupportedOperationException("Incorrect mapping from UserDTO to User");
         }
         throw new UnsupportedOperationException("Incorrect mapping");
     }
 
-
+         //Estos dos son validadores custom para chequear que el mapeo esté bien hecho.
+        //Ahora que la app funciona los puedo sacar, pero los dejo acá por las dudas los precise en el futuro.
+        //Habian mas como el de username etc etc pero me interesa únicamente el de la contrasenia.
         public boolean checkMapping(User user1, UserDTO user2) {
-         boolean value1 = user1.getUsername().equals(user2.getUsername());
-         boolean value2 = user1.getPassword().equals(user2.getPassword());
-         System.out.println(user1.getPassword());
-         System.out.println(user2.getPassword());
-         return value2;
+            return user1.getPassword().equals(user2.getPassword());
         }
 
     public boolean checkMapping(User user1, UserPrincipal user2) {
-        boolean value1 = user1.getUsername().equals(user2.getUsername());
-        boolean value2 = user1.getPassword().equals(user2.getPassword());
-        return value2;
+        return user1.getPassword().equals(user2.getPassword());
     }
     }
 

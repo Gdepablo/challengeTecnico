@@ -5,7 +5,6 @@ import Backend.component.NoteDTO;
 import Backend.component.UserDTO;
 import Backend.services.UserServiceImpl;
 import lombok.Data;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

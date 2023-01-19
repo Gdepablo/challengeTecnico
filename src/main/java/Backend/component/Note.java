@@ -2,8 +2,6 @@ package Backend.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;

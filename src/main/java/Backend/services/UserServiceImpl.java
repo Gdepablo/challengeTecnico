@@ -5,7 +5,6 @@ import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
 import Backend.component.*;
 import Backend.repository.UserRepository;
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -161,8 +160,30 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //El problema evidentemente esta aca
        UserDTO user = this.getUserByUsername(username);
         User anUser = convertToUser(user);
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(anUser,UserPrincipal.class);
+        MHelpers.modelMapper().validate();
+        if(this.checkMapping(anUser, user)) {
+            UserPrincipal anotherUser = MHelpers.modelMapper().map(anUser,UserPrincipal.class);
+            if(this.checkMapping(anUser, anotherUser)) {
+                System.out.println("El encargado");
+                return  MHelpers.modelMapper().map(anUser,UserPrincipal.class);
+            } else throw new UnsupportedOperationException("Fail in the second if");
         }
+        throw new UnsupportedOperationException("Incorrect mapping");
+    }
+
+
+        public boolean checkMapping(User user1, UserDTO user2) {
+         boolean value1 = user1.getUsername().equals(user2.getUsername());
+         boolean value2 = user1.getPassword().equals(user2.getPassword());
+         System.out.println(user1.getPassword());
+         System.out.println(user2.getPassword());
+         return value2;
+        }
+
+    public boolean checkMapping(User user1, UserPrincipal user2) {
+        boolean value1 = user1.getUsername().equals(user2.getUsername());
+        boolean value2 = user1.getPassword().equals(user2.getPassword());
+        return value2;
+    }
     }
 

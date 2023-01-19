@@ -30,8 +30,4 @@ public class User implements Serializable {
     public void setAllNotes(List<Note> notes) {
         this.notes.addAll(notes);
     }
-
-    public void setPassword(String password) {
-        this.password = BCryptHelper.passwordEncoder().encode(password); //Cifra la contrasenia
-    }
 }

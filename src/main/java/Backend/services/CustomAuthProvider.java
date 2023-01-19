@@ -37,10 +37,12 @@ public class CustomAuthProvider implements AuthenticationProvider {
             //No valido el username porque ya esta validado en otro lado.
 
             String hashedPassword = userDetails.getPassword();
-            String salt = hashedPassword.substring(0, 23);
-            System.out.println(salt);
+            String salt = user.getSalt();
+            System.out.println(BCrypt.hashpw(password,user.getSalt()));
+            System.out.println(BCrypt.hashpw(password,user.getSalt()));
             System.out.println("---------");
             System.out.println(hashedPassword);
+            System.out.println("$2a$10$kfo7rdkxaJctVfML/pkpH.8be/C5zNBwmwvqpSgr1dBXNY43ONL5a");
 
             if (!BCrypt.checkpw(BCrypt.hashpw(password,user.getSalt()),hashedPassword)) {
                 throw new BadCredentialsException("Wrong password.");

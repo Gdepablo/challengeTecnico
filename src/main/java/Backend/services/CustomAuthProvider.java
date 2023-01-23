@@ -27,14 +27,12 @@ public class CustomAuthProvider implements AuthenticationProvider {
             String username = authentication.getName();
             String password = authentication.getCredentials().toString();
 
-
-
             UserDetails userDetails = userServiceImpl.loadUserByUsername(username);
             //No valido el username porque ya esta validado en otro lado.
 
             String hashedPassword = userDetails.getPassword();
 
-            if (passwordEncoder.matches(password,hashedPassword)) {
+            if (!passwordEncoder.matches(password,hashedPassword)) {
                 throw new BadCredentialsException("Wrong password.");
             }
 

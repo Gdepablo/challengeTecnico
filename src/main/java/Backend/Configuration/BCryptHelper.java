@@ -18,13 +18,13 @@ public static BCryptPasswordEncoder passwordEncoder() {
 
 //Bean es como para definir un componente, mientras que autowired es para inyectar componentes.
 
-//@Bean is used in a configuration class, typically annotated with @Configuration.
+//Bean is used in a configuration class, typically annotated with Configuration.
 // It is used to define beans for the Spring ApplicationContext.
-// This annotation is typically used in conjunction with the @Configuration annotation to define beans.
+// This annotation is typically used in conjunction with the Configuration annotation to define beans.
 //
-//@Component is used to indicate that a class is a Spring Bean, without specifying how the bean will be created.
+//Component is used to indicate that a class is a Spring Bean, without specifying how the bean will be created.
 // It is more general-purpose and can be used in any class, not just in a configuration class.
 // This annotation is typically used on classes that will be automatically detected by classpath scanning.
 //
-//In terms of functionality, they are equivalent, but it's considered best practice to use @Bean
+//In terms of functionality, they are equivalent, but it's considered best practice to use Bean
 // in configuration classes, and @Component in other classes.

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Configuration
 public class LoginConfiguration {
-//Borre metodos que no precisaba. Esto debe seguir funcando.
     @Bean
     public ProviderManager providerManager(CustomAuthProvider customAuthProvider) {
         List<AuthenticationProvider> providers = new ArrayList<>();

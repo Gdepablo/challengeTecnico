@@ -113,11 +113,12 @@
 		<scope>provided</scope>
 	</dependency>
 
-	<dependency>
+	 <dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-thymeleaf</artifactId>
 	</dependency>
-<!-- con esta dependencia spring maneja toodo (lo relacionado a thymyleaf), y yo no tengo que crear una config file (como con Handlebars)-->
+<!-- con esta dependencia spring maneja toodo (lo relacionado a thymyleaf), y yo no tengo que crear una config file (como con Handlebars)
+aunque ni lo estamos usando jajajaja-->
 
 </dependencies>
 
@@ -126,11 +127,25 @@
 		<plugin>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
-			<configuration>
-				<executable>true</executable>
-			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>repackage</goal>
+					</goals>
+					<configuration>
+						<executable>true</executable>
+						<finalName>pruebaTecnicaEnsolvers</finalName>
+						<mainClass>Backend.Routes</mainClass>
+					</configuration>
+				</execution>
+			</executions>
 		</plugin>
 	</plugins>
+	<resources><resource>
+		<directory>src/main/resources</directory>
+		<excludes>
+		<exclude>**\JDK\**</exclude>
+	</excludes></resource></resources>
 </build>
 
 </project>

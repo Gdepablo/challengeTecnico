@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Component
 @Data
-public class CategoryServiceImpl implements CategoryService {
+public class    CategoryServiceImpl implements CategoryService {
 
     private final NoteServiceImpl noteService;
     private final CategoryRepository categoryRepo;
@@ -90,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
         Note note = this.convertToNotes(noteService.getNotesById(id));
         Category category = this.convertToCategory(this.getCategoryById(idCategory));
         note.removeCategory(category);
-        deleteById(idCategory); //No sé si corresponde que al removerla se borre.
+        deleteById(idCategory); //No se si corresponde que al removerla se borre.
         NoteDTO noteToPass = this.convertToNotesDTO(note); //Rompe tanto si no existe categoria como si no existe la nota.
         noteService.save(noteToPass);
     }

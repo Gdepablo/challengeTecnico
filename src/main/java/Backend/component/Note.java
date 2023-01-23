@@ -40,7 +40,7 @@ public class Note implements Serializable {
 
     public void removeCategory(Category categoryForRemoval) {
         this.categories.remove(categoryForRemoval);
-    } //Getters y setters esta bien que esten acá.
+    } //Getters y setters esta bien que esten aca.
 
     public void addCategories(List<Category> newCategories) {
         this.categories.addAll(newCategories);

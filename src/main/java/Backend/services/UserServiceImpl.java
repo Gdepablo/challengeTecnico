@@ -5,12 +5,10 @@ import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
 import Backend.component.*;
 import Backend.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +70,7 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
 
     }
     @Override
-    public void addUser(int id, NoteDTO note) { //Asocia una nota nueva al usuario. TODO: Revisar. no me convence.
+    public void addUser(int id, NoteDTO note) { //Asocia una nota nueva al usuario.
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -155,7 +153,7 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //El problema evidentemente esta aca
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        UserDTO user = this.getUserByUsername(username);
         User anUser = convertToUser(user);
         MHelpers.modelMapper().validate();
@@ -168,9 +166,9 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
         throw new UnsupportedOperationException("Incorrect mapping");
     }
 
-         //Estos dos son validadores custom para chequear que el mapeo esté bien hecho.
-        //Ahora que la app funciona los puedo sacar, pero los dejo acá por las dudas los precise en el futuro.
-        //Habian mas como el de username etc etc pero me interesa únicamente el de la contrasenia.
+         //Estos dos son validadores custom para chequear que el mapeo este bien hecho.
+        //Ahora que la app funciona los puedo sacar, pero los dejo aca por las dudas los precise en el futuro.
+        //Habian mas como el de username etc etc pero me interesa unicamente el de la contrasenia.
         public boolean checkMapping(User user1, UserDTO user2) {
             return user1.getPassword().equals(user2.getPassword());
         }

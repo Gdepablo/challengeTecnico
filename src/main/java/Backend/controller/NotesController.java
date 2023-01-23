@@ -14,7 +14,7 @@ import Backend.services.NoteServiceImpl;
 import java.util.List;
 
 
-//@CrossOrigin("*") //Segun GPT ai es para poder tomar datos , por ej si mi pag web esta en google.com, de api.google.com. Es seguro solo en app publicas
+//arroba CrossOrigin("*") //Segun GPT ai es para poder tomar datos , por ej si mi pag web esta en google.com, de api.google.com. Es seguro solo en app publicas
 @RestController
 @RequestMapping("/notes")
 @Data
@@ -85,13 +85,11 @@ public class NotesController {
     //Asumo que los get method no pueden fallar. Seria estupido que fallen a menos que haya algun error en mi codigo tipo loop infinito.
 
     //Los transactional read only son para mas performance segun lei en stack overflow.
-
-    //TODO: Update readme. Update bash script.
     //Para filtrar notas por categoria necesitaria un metodo que me traiga TODAS las notas y de ahi tirarle un contains a la lista y tal para ver el tema de si tiene la
     //categoria o no. Supongo que el tema seria traer todas las notas de la db? O tal vez traer solo la especificada. Si traigo todas despues muestro una nomas y eso es una cosa
     //de la view que es como una pavada, es parecido al tp de dds.
-    //respecto al agregar o sacar notas, hay que preguntar (porque es una decision de diseño):
-    //Al sacar una categoria de una nota, ¿la borro de la base de datos? o hago un condicional que establezca que si esa categoria solo estaba en esa nota, la borre.
+    //respecto al agregar o sacar notas, hay que preguntar (porque es una decision de disenio):
+    //Al sacar una categoria de una nota, la borro de la base de datos? o hago un condicional que establezca que si esa categoria solo estaba en esa nota, la borre.
     //Luego, lo mismo con el crear.
 
     //RequestParam is used to extract query parameters from the request URL,

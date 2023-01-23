@@ -32,3 +32,15 @@ build/
 ### VS Code ###
 .vscode/
 
+#####JDKS used to compile the Jlink#######
+src/main/resources/JDK
+src/main/resources/JDK/**/legal/
+src/main/resources/openjdk-17.0.2_linux-x64_bin.tar.gz
+src/main/resources/openjdk-17.0.2_macos-x64_bin.tar.gz
+
+#Por las dudas
+mvnw.cmd
+
+
+
+

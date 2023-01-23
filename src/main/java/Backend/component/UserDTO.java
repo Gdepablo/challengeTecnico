@@ -13,13 +13,11 @@ public class UserDTO implements Serializable {
     private String password;
     private List<Note> notes = new ArrayList<>();
     private Date accountCreationDate = new Date();
-    private String salt;
 
     //Segun la IA, el UserDTO es un POJO que se usa para transferir datos entre la aplicacion mientras que la clase
-    //myPrincipal se usa para toodo lo relacionado con la sesion y demas, incluyendo ver si esta autenticado, los roles,etc
+    //myPrincipal se usa para toodo lo relacionado con la sesion y demas, incluyendo ver si esta autenticado,los roles,etc
     //Se puede usar esta clase como principal si es que no necesitas esconder ningun dato de implementacion o alguna cosa del
     //modulo de seguridad. Pero me piden que tenga contrasenia y eso, pero el tema es que no es recomendado
     //Primero, pienso yo, por el hecho de que lo estas exponiendo al usarlo como objeto de transferencia, entonces es mejor
-    //una class 'principal' que se ocupa de eso. Desafortunadamente, pasarle la contrasenia de otra forma es un bardo,
-    // entonces le pongo la pw hasheada acá y se la paso. Pero para eso tuve q sobreescribir el setter.
+    //una class 'principal' que se ocupa de eso.
 }

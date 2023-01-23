@@ -1,10 +1,22 @@
 # Notes App
-Está deployado en Heroku https://prueba-tecnica-ensolvers.herokuapp.com/
-No supe cómo mapear las rutas dado que usé java y javascript. No es un conocimiento que yo posea ahora mismo.
-La lógica backend está hecha y frontend tambien, simplemente no están conectados (pero hay un intento de)
-Para correr localmente el proyecto se necesita
-Ultima versión conocida de Maven
-JDK 17 o superior
-Spring boot es una dependencia manejada por maven, por lo cual no es necesario instalar
-Hay conflicto con node y heroku.
-Correr localmente usando mvn spring-boot:run
+El backend está completo. Hay algunas cosas que se salen del scope -como crear un controller de usuarios-
+pero fue necesario y utilizado para debugear y para el login. Ademas, ya que cree la entidad usuario, aproveche para
+que el mismo conozca sus notas, de forma que todo lo que quedaria es el frontend que supongo que lo haré pronto.
+El script fue actualizado para poder correr el programa en Mac y Linux, como pedido. El enunciado no lo publico aca
+porque es publico, pero es uno de la empresa Ensolvers.
+En resumen:
+Logica backend completa (Phase 1, Phase 2 y Extra Functionalities).
+No documento acá porque cada clase tiene comentado qué hace y por qué tomé cada decisión. 
+Es mejor tenerlo ahí que tenerlo acá y que no se entienda nada.
+Se puede deployear en railway pero por un tema de recursos limitado, no lo hago, aunque es fácil hacerlo.
+Cuando tenga el front terminado, haré la prueba.
+Credenciales del login:
+Username: bizarrap
+Password: Shakira
+
+Username: admin
+Password: Admin
+
+(Por alguna razon me los pone en mayuscula las password, aunque no sé por qué. Puede que sea imaginacion mía pero lo dudo.)
+
+

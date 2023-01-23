@@ -12,11 +12,11 @@ Se puede deployear en railway pero por un tema de recursos limitado, no lo hago,
 Cuando tenga el front terminado, haré la prueba.
 Credenciales del login:
 Username: bizarrap
-Password: Shakira
+Password: shakira
 
 Username: admin
-Password: Admin
+Password: admin
 
-(Por alguna razon me los pone en mayuscula las password, aunque no sé por qué. Puede que sea imaginacion mía pero lo dudo.)
+Fixeado el issue de que lo ponia en mayuscula, tenia la validacion invertida
 
 

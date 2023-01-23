@@ -30,7 +30,7 @@ elif [ "$(uname -s)" == "Darwin" ] || [ -f /etc/os-release ] && grep -q "NAME=.*
 then
 
 
-wget "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_macos-x64_bin.tar.gz" -P "$script_path/src/main/resources"
+curl -O https://download.java.net/java/GA/jdk17.0.2/fdb695a9d9064ad6b064dc6df578380c/7/GPL/openjdk-17.0.2_macos-x64_bin.tar.gz -o "$script_path/JDK/jdk-17.0.2"
 
 cd "$script_path/src/main/resources" || exit
 

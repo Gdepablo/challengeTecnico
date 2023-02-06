@@ -1,15 +1,14 @@
-<script src="src/handleFormSubmit.js"></script>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
   <title>My Notes App</title>
-  <link rel="stylesheet" href="src/style.css">
+  <link rel="stylesheet" href="src/index.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" type="text/css">
 </head>
 <body>
+<script src="src/handleFormSubmit.js"></script>
 <div class="popup-box">
   <div class="popup">
     <div class="content">
@@ -20,11 +19,11 @@
       <form onsubmit="handleFormSubmit()">
         <div class="row title">
           <label>Title</label>
-          <input type="text" spellcheck="false">
+          <input type="text" spellcheck="false" name="title">
         </div>
         <div class="row description">
           <label>Description</label>
-          <textarea spellcheck="false"></textarea>
+          <textarea spellcheck="false" name="content"></textarea>
         </div>
         <button type="submit"></button>
       </form>
@@ -37,7 +36,6 @@
     <p>Add new note</p>
   </li>
 </div>
-<script src="src/script.js"></script>
-
+<script src="src/Script.js"></script>
 </body>
 </html>

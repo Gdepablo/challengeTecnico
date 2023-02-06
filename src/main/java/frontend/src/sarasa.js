@@ -1,38 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+function sarasa() {
+    window.React1 = require('react');
 
-const Login = () => {
-    const [notes, setNotes] = useState(null);
+// Add this in your component file
+    require('react-dom');
+    window.React2 = require('react');
+    console.log(window.React1 === window.React2);
 
-    useEffect(() => {
-        axios.get('https://localhost:8081/notes/active', {
-            redirect: 'follow',
-            auth: {
-                username: "admin",
-                password: "admin",
-            }
-        })
-            .then(response => {
-                setNotes(JSON.stringify(response));
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }, []);
+}
 
-    return (
-        <div>
-            {notes && (
-                <div>
-                    <h2>Notes</h2>
-                    <pre>{notes}</pre>
-                </div>
-            )}
-        </div>
-    );
-};
-
-export default Login;
-
-//DEJO ESTO ASI PORQUE FUNCIONA. PRUEBO EN OTROS ARCHIVOS.
-
+export default sarasa

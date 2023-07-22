@@ -3,6 +3,7 @@ package Backend.services;
 import Backend.Configuration.BCryptHelper;
 import Backend.Exceptions.NotFoundException;
 import Backend.Helper.MHelpers;
+import Backend.Security.UserPrincipal;
 import Backend.component.*;
 import Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +35,20 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
 
     @Override
     public void save(UserDTO user) {
-        User aUser = this.convertToUser(user);
-        aUser.setPassword(passwordEncoder.encode(aUser.getPassword())); //hashea la contrasenia.
-        this.userRepository.save(aUser);
+        Client aClient = this.convertToUser(user);
+        aClient.setPassword(passwordEncoder.encode(aClient.getPassword())); //hashea la contrasenia.
+        this.userRepository.save(aClient);
     }
 
     @Override
     public void deleteUser (UserDTO user) {
-        User aUser = this.convertToUser(user);
-        this.userRepository.delete(aUser);
+        Client aClient = this.convertToUser(user);
+        this.userRepository.delete(aClient);
     }
 
     @Override
     public void deleteById(int id) {
-        Optional<User> aUser = userRepository.findById(id);
+        Optional<Client> aUser = userRepository.findById(id);
 
         if (aUser.isPresent()) {
             userRepository.delete(aUser.get());
@@ -58,37 +59,37 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
 
     @Override
     public void updateUser (int id,UserDTO user) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<Client> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
-        User aUser = this.convertToUser(user);
-        User persistedUser = optionalUser.get();
-        persistedUser.setUsername(aUser.getUsername());
-        persistedUser.setAllNotes(aUser.getNotes());
-        this.userRepository.save(persistedUser);
+        Client aClient = this.convertToUser(user);
+        Client persistedClient = optionalUser.get();
+        persistedClient.setUsername(aClient.getUsername());
+        persistedClient.setAllNotes(aClient.getNotes());
+        this.userRepository.save(persistedClient);
         return;}
         throw new NotFoundException("User not found"); //OK.
 
     }
     @Override
     public void addUser(int id, NoteDTO note) { //Asocia una nota nueva al usuario.
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<Client> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+            Client client = optionalUser.get();
             noteService.save(note);
             Note aNote = MHelpers.modelMapper().map(note,Note.class);
-            user.getNotes().add(aNote); //Primero persisto la nota y luego al final persisto el usuario.
+            client.getNotes().add(aNote); //Primero persisto la nota y luego al final persisto el usuario.
             this.userRepository.save(optionalUser.get());
             return;}
         throw new NotFoundException("User not found");
     }
     @Override
     public void removeUser(int id,int noteId) {
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<Client> optionalUser = userRepository.findById(id);
         NoteDTO note = noteService.getNotesById(noteId);
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+            Client client = optionalUser.get();
             Note aNote = MHelpers.modelMapper().map(note,Note.class);
-            user.getNotes().add(aNote);
+            client.getNotes().add(aNote);
             this.userRepository.delete(optionalUser.get());
             return;}
         throw new NotFoundException("User not found");
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
     @Override
     @Transactional(readOnly = true)
     public UserDTO getUserById(int id) {
-        Optional<User> users = userRepository.findById(id);
+        Optional<Client> users = userRepository.findById(id);
         Optional<UserDTO> user = users.map(this::convertToUserDTO); //Mapeo para convertir de Notes a NotesDTO
 
         if(user.isPresent()) {
@@ -106,25 +107,26 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
     }
 
     public UserDTO getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        Client client = userRepository.findByUsername(username);
+        System.out.println("El cliente es" + client + "Y el username que llego " + username);
 
-        if(user == null) {
+        if(client == null) {
             throw new NotFoundException("User not found");
         }
-        return convertToUserDTO(user);
+        return convertToUserDTO(client);
     }
-    public User convertToUser(UserDTO user) {
-        return MHelpers.modelMapper().map(user, User.class);
+    public Client convertToUser(UserDTO user) {
+        return MHelpers.modelMapper().map(user, Client.class);
     }
 
-    public UserDTO convertToUserDTO(User user) {
-        return MHelpers.modelMapper().map(user, UserDTO.class);
+    public UserDTO convertToUserDTO(Client client) {
+        return MHelpers.modelMapper().map(client, UserDTO.class);
     }
     @Override
     @Transactional(readOnly = true)
     public List<UserDTO> findAll() {
-            Iterable<User> users = userRepository.findAll();
-            List<User> iterableToList = new ArrayList<>();
+            Iterable<Client> users = userRepository.findAll();
+            List<Client> iterableToList = new ArrayList<>();
             users.forEach(iterableToList::add);
             return iterableToList.stream().map(this::convertToUserDTO).toList();
 
@@ -133,48 +135,30 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
     public void addNoteToUser(int id, NoteDTO aNote) { //Logicamente hablando, lo que mas tiene sentido es guardar y borrar de
         //uno en uno.
         UserDTO user = this.getUserById(id);
-        User anUser = this.convertToUser(user);
+        Client anClient = this.convertToUser(user);
         Note note = MHelpers.modelMapper().map(aNote,Note.class);
-        anUser.getNotes().add(note);
-        save(convertToUserDTO(anUser));
+        anClient.getNotes().add(note);
+        save(convertToUserDTO(anClient));
     }
 
     @Override
     public void deleteNoteFromUser(int id, int noteId) {
         UserDTO user = this.getUserById(id);
-        User anUser = this.convertToUser(user);
+        Client anClient = this.convertToUser(user);
         List<Note> notes = user.getNotes();  //Lista de notas.
         Stream<Note> filteredNote = notes.stream().filter(note -> note.getId() == noteId); //Consigo la nota pa borrar.
         Note noteToRemove = filteredNote.toList().get(0); //Siempre es unico porque el id es unico entonces aca
         // consigo la nota para borrar. el ToList es pa limpiarme el stream y el get pa obtener la nota.
         notes.remove(noteToRemove);
-        this.save(convertToUserDTO(anUser));
+        this.save(convertToUserDTO(anClient));
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        UserDTO user = this.getUserByUsername(username);
-        User anUser = convertToUser(user);
-        MHelpers.modelMapper().validate();
-        if(this.checkMapping(anUser, user)) {
-            UserPrincipal anotherUser = MHelpers.modelMapper().map(anUser,UserPrincipal.class);
-            if(this.checkMapping(anUser, anotherUser)) {
-                return  MHelpers.modelMapper().map(anUser,UserPrincipal.class);
-            } else throw new UnsupportedOperationException("Incorrect mapping from UserDTO to User");
+        Client anClient = convertToUser(user);
+        return  MHelpers.modelMapper().map(anClient, UserPrincipal.class);
         }
-        throw new UnsupportedOperationException("Incorrect mapping");
-    }
-
-         //Estos dos son validadores custom para chequear que el mapeo este bien hecho.
-        //Ahora que la app funciona los puedo sacar, pero los dejo aca por las dudas los precise en el futuro.
-        //Habian mas como el de username etc etc pero me interesa unicamente el de la contrasenia.
-        public boolean checkMapping(User user1, UserDTO user2) {
-            return user1.getPassword().equals(user2.getPassword());
-        }
-
-    public boolean checkMapping(User user1, UserPrincipal user2) {
-        return user1.getPassword().equals(user2.getPassword());
-    }
     }
 

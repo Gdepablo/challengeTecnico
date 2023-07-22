@@ -17,6 +17,8 @@ Password: admin
 
 Fixeado el issue de que lo ponia en mayuscula, tenia la validacion invertida
 
-Las credenciales de la DB ya no están activas, en cuyo caso se desee probar habría que poner alguna DB propia.
+IMPORTANTE: los HTTP son Observers que nacen y mueren en la peticion, o sea yo no tengo que matarlos
+PERO los eventEmitter tenes que desuscribirte con ngOnDestroy o sino quedan abiertos y hay memory leak
+(Como si fuesen punteros o algo asi). Por ejemplo el de notes.component.ts
 
 

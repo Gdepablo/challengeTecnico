@@ -15,6 +15,4 @@ public class CategoryDTO implements Serializable { //No se persiste no es necesa
     private String tag;
     private List<Backend.component.Note> notes = new ArrayList<>();
 
-    //NO LLEVA CONSTRUCTOR, SE OCUPA EL DATA DE LOMBOK. SI LE PONGO CONSTRUCTOR EL NO ARGS CONSTRUCTOR NO LO TOMA.
-
 }

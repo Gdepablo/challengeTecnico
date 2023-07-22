@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notes")
 @Data
+@CrossOrigin(origins = "http://localhost:4200")
 public class NotesController {
 
     private final NoteServiceImpl service;
@@ -73,13 +74,13 @@ public class NotesController {
     @GetMapping(value = "/active",produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     public ResponseEntity<List<NoteDTO>> getActiveNotes() {
-        return new ResponseEntity<>(service.findAllActive(), HttpStatus.FOUND); //OK
+        return new ResponseEntity<>(service.findAllActive(), HttpStatus.OK); //OK
     } //OK
 
     @GetMapping(value="/archived",produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     public ResponseEntity<List<NoteDTO>> getArchivedNotes() {
-        return new ResponseEntity<>(service.findAllArchived(), HttpStatus.FOUND); //OK
+        return new ResponseEntity<>(service.findAllArchived(), HttpStatus.OK); //OK
     } //OK
 
     //Asumo que los get method no pueden fallar. Seria estupido que fallen a menos que haya algun error en mi codigo tipo loop infinito.

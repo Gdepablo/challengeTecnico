@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notes/{noteId}/category") //No se si la ruta esta bien, o conviene otra cosa, pero es evidente que las categorias se agregan a una nota.
 @Data
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;

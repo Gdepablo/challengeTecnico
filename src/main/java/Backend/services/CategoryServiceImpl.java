@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Component
 @Data
-public class    CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl implements CategoryService {
 
     private final NoteServiceImpl noteService;
     private final CategoryRepository categoryRepo;
@@ -90,15 +90,15 @@ public class    CategoryServiceImpl implements CategoryService {
         Note note = this.convertToNotes(noteService.getNotesById(id));
         Category category = this.convertToCategory(this.getCategoryById(idCategory));
         note.removeCategory(category);
-        deleteById(idCategory); //No se si corresponde que al removerla se borre.
-        NoteDTO noteToPass = this.convertToNotesDTO(note); //Rompe tanto si no existe categoria como si no existe la nota.
+        deleteById(idCategory);
+        NoteDTO noteToPass = this.convertToNotesDTO(note);
         noteService.save(noteToPass);
     }
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryById(int id) {
         Optional<Category> categoryOptional = categoryRepo.findById(id);
-        Optional<CategoryDTO> categoryDTO = categoryOptional.map(this::convertToCategoryDTO); //Mapeo para convertir de Notes a NotesDTO
+        Optional<CategoryDTO> categoryDTO = categoryOptional.map(this::convertToCategoryDTO);
         return this.noOptionalCategoryDTO(categoryDTO);
     };
 

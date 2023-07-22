@@ -31,13 +31,13 @@ public class NoteServiceImpl implements NoteService {
     @Transactional(readOnly = true)
     public NoteDTO getNotesById(int id) {
         Optional<Note> notes = noteRepository.findById(id);
-        Optional<NoteDTO> note = notes.map(this::convertToNotesDTO); //Mapeo para convertir de Notes a NotesDTO
+        Optional<NoteDTO> note = notes.map(this::convertToNotesDTO);
         return this.noOptionalNoteDTO(note);
     }
 
     public NoteDTO noOptionalNoteDTO(@NotNull Optional<NoteDTO> note) {
         if(note.isPresent())
-            return note.get(); //Para sacarme el optional
+            return note.get();
         else {
             throw new NotFoundException("Note not found");
         }
@@ -80,7 +80,7 @@ public class NoteServiceImpl implements NoteService {
         NoteDTO note = this.getNotesById(id);
         Note newNote = this.convertToNotes(note);
         newNote.setActive(false);
-        noteRepository.save(newNote); //Importante para que guarde el actualizado c:
+        noteRepository.save(newNote);
     }
     @Override
     public void unarchiveNote(int id) {
@@ -119,7 +119,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void updateNote(int id, @NotNull NoteDTO newNote) { //ID de la nota activa.
+    public void updateNote(int id, @NotNull NoteDTO newNote) {
         Optional<Note> note = noteRepository.findById(id);
         if(note.isEmpty()) {throw new NotFoundException("Note not found");}
         else {
@@ -129,6 +129,3 @@ public class NoteServiceImpl implements NoteService {
         noOptionalNote.addCategories(newNote.getCategories());
         noteRepository.save(noOptionalNote);
     }}}
-
-
-//WARNING: Las tildes rompen el debug, no usar tildes pq crashea maven.

@@ -1,4 +1,3 @@
-#!/bin/bash
 sudo chmod 775 BootScript.sh
 sudo sed -i -e 's/\r$//' mvnw
 
@@ -26,11 +25,14 @@ cd "$script_path/../../.."|| exit
 
 sudo "$JAVA_HOME/bin/java" -jar "$script_path/target/pruebaTecnicaEnsolvers.jar"
 
+cd "src/main/frontend/frontend" || exit
+
+ng serve
+
 elif [ "$(uname -s)" == "Darwin" ] || [ -f /etc/os-release ] && grep -q "NAME=.*Darwin" /etc/os-release || [[ "$OSTYPE" == "darwin"* ]];
 then
 
-
-curl -O https://download.java.net/java/GA/jdk17.0.2/fdb695a9d9064ad6b064dc6df578380c/7/GPL/openjdk-17.0.2_macos-x64_bin.tar.gz -o "$script_path/JDK/jdk-17.0.2"
+curl -O "https://download.java.net/java/GA/jdk17.0.2/fdb695a9d9064ad6b064dc6df578380c/7/GPL/openjdk-17.0.2_macos-x64_bin.tar.gz" -o "$script_path/JDK/jdk-17.0.2"
 
 cd "$script_path/src/main/resources" || exit
 
@@ -46,6 +48,13 @@ cd "$script_path/../../.."|| exit
 ./mvnw clean package
 
 sudo "$JAVA_HOME/bin/java" -jar "$script_path/target/pruebaTecnicaEnsolvers.jar"
+
+brew install node
+npm install || exit
+
+cd "src/main/frontend/frontend" || exit
+
+ng serve
 
 else echo "This script does not support Windows-based Systems."
 fi

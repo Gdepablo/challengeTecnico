@@ -1,9 +1,6 @@
-import { compileNgModule } from '@angular/compiler';
-import { HttpParams } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NotesService } from './notes.service';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-note',
@@ -11,7 +8,7 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./note.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit,OnDestroy {
  protected notesArray: any[] = [] //Solo accessible en el mismo package
 
 
@@ -25,9 +22,11 @@ export class NoteComponent implements OnInit {
   showNotes() {
     this.noteService.observable.subscribe(() =>
     this.notesArray = this.noteService.getNotes(),
-    console.log("Me llego la nota" + this.notesArray)
     )
+  }
 
-  } //Deberia separarlo bien en distintos componentes
+  ngOnDestroy():void {
+    this.noteService.observable.unsubscribe();
+  }
 
 }

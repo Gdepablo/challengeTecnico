@@ -114,9 +114,9 @@
 		<scope>provided</scope>
 	</dependency>
 
-	 <dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-thymeleaf</artifactId>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
 	</dependency>
 
 </dependencies>

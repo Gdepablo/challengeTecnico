@@ -21,7 +21,7 @@ export class NotesService {
 
    public getAllNotes(username: String, password: String): Observable<Object> { //Notas del usuario logeado
     const headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(username + ':' + password)})
-    return this.http.get<any>('/notes/active',{headers});
+    return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers});
    }
 
    public getJSESSIONID(): String { //Se crean getter y setter para poder compartir las notas entre componentes distintos

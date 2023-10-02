@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoteComponent } from './note/note.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { CsrfInterceptor } from './CsrfInterceptor.interceptor';
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    HttpClientXsrfModule,
   ],
   declarations: [
     NoteComponent,
    ],
   exports:[
     NoteComponent
-  ]
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true },
+  ],
 })
 export class GeneralModule { }
 

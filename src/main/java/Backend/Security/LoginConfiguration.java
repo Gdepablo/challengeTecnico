@@ -12,10 +12,19 @@ public class LoginConfiguration implements WebMvcConfigurer {
 
 @Bean
  protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-  http.authorizeRequests().antMatchers("/login").permitAll().anyRequest().authenticated().
-      and().csrf().disable().formLogin().loginPage("/login").permitAll().and().httpBasic();
+  http
+      .authorizeRequests()
+      .antMatchers("/login", "/csrf").permitAll()
+      .anyRequest().authenticated()
+      .and()
+      .csrf()
+      .disable()
+      .formLogin()
+      .loginPage("/login")
+      .permitAll()
+      .and()
+      .httpBasic();
      return http.build();
-}
-
+} 
 }
 

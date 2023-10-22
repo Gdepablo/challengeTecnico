@@ -42,7 +42,7 @@ public class LoginController{
       SecurityContextHolder.getContext().setAuthentication(auth);
       return String.valueOf(HttpStatus.OK);}
     catch (AuthenticationException e) {
-      return "login";
+      return "redirect:/notes";
     }}
 
   @PostMapping("/logout")

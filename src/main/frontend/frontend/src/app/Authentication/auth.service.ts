@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ public login(username: String, password: String): Observable<Object> { //Notas d
     'Content-Type': 'application/x-www-form-urlencoded'
   });
 
-  return this.http.post('/login', {'username': username,
+  return this.http.post(`${environment.apiUrl}/login`, {'username': username,
   'password': password}, { headers });
 
  }

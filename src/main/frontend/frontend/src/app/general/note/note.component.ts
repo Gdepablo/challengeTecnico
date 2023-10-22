@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NotesService } from './notes.service';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-note',
@@ -17,6 +18,7 @@ export class NoteComponent implements OnInit,OnDestroy {
     router: Router) {}
   ngOnInit(): void {
     this.showNotes(); //Le digo que se suscriba al observable al iniciar
+    //this.metodoBoludo();
   }
 
   showNotes() {
@@ -28,5 +30,20 @@ export class NoteComponent implements OnInit,OnDestroy {
   ngOnDestroy():void {
     this.noteService.observable.unsubscribe();
   }
+
+ metodoBoludo():void {
+  let formData = new FormGroup( {
+      sarasa: new FormControl()
+  })
+  formData.patchValue({
+    sarasa: "hola"
+  });
+
+  console.log(JSON.stringify(formData.getRawValue())) //EJEMPLO DE STRINGIFICAR EL JSON SIN VOLVERTE LOCO
+
+}
+
+
+
 
 }

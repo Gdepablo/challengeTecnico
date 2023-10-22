@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientXsrfModule } from '@angular/common/http';
-import { CsrfInterceptor } from './general/CsrfInterceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -15,13 +13,8 @@ import { CsrfInterceptor } from './general/CsrfInterceptor.interceptor';
     BrowserModule,
     AppRoutingModule,
     GeneralModule,
-    HttpClientXsrfModule.withOptions({
-      cookieName: "XSRF-TOKEN",
-      headerName: "X-XSRF-TOKEN"
-      }),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CsrfInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

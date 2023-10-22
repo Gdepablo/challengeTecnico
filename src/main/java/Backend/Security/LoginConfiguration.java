@@ -14,7 +14,7 @@ public class LoginConfiguration implements WebMvcConfigurer {
  protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
   http
       .authorizeRequests()
-      .antMatchers("/login", "/csrf").permitAll()
+      .antMatchers("/login").permitAll()
       .anyRequest().authenticated()
       .and()
       .csrf()

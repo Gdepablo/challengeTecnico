@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller //Se le deja controller para que renderice el html y no restController
 public class LoginController{
 

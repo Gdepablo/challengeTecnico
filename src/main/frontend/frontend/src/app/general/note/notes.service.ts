@@ -12,21 +12,17 @@ export class NotesService {
   //Lo ideal seria tener definido el modelo en el front, pero no hay tiempo
   private notesArray: any[] = [];
   public observable: EventEmitter<any> = new EventEmitter();
-  private JSESSIONID: String = '';
 
 
-  constructor(private http: HttpClient,
-    private cookieService: CookieService) {
-   }
+  constructor(private http: HttpClient)
+   {}
 
    public getAllNotes(username: String, password: String): Observable<Object> { //Notas del usuario logeado
     const headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(username + ':' + password)})
     return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers});
    }
 
-   public getJSESSIONID(): String { //Se crean getter y setter para poder compartir las notas entre componentes distintos
-   return this.JSESSIONID;
-   }
+
 
    public setNotes(notes: any[]) {
     this.notesArray = notes;

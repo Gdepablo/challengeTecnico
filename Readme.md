@@ -22,7 +22,12 @@ Para acceder al sistema y probar las funcionalidades, se pueden utilizar las sig
 
 En este proyecto, los HTTP son Observers que nacen y mueren junto con cada petición. No es necesario gestionar su ciclo de vida manualmente. Sin embargo, es crucial tener en cuenta que los eventEmitter deben desuscribirse usando `ngOnDestroy` para evitar pérdidas de memoria (memory leaks). Un ejemplo de esto se puede encontrar en `notes.component.ts`.
 
-### Deploy en Railway
+### Links importantes
 
-Este proyecto se puede implementar en Railway sin problemas. Sin embargo, debido a limitaciones de recursos, no se ha llevado a cabo la implementación. Pero en cualquier caso, es fácil realizar el despliegue cuando se tenga el Frontend terminado.
+https://stackoverflow.com/questions/56015702/angular-form-builder-vs-form-control-and-form-group
+https://stackoverflow.com/questions/49269403/how-to-get-nested-formgroups-controls-in-angular
+
+En resumen, form builder > formgroup y además es más simple obtener los childs. Supongo que es más simple obtener el JSON de un nested formGroup. 
+
+
 

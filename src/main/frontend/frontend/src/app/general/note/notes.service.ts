@@ -31,4 +31,11 @@ export class NotesService {
    public getNotes() {
     return this.notesArray;
    }
+
+   public deleteNoteById(id: Number) {
+    return this.http.delete(`${environment.apiUrl}/notes/delete/${id}`)}
+
+  public updateNote(id: Number, data: any) {
+    return this.http.put(`${environment.apiUrl}/notes/update/${id}`,data)
+  }
 }

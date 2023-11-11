@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NotesService } from './notes.service';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators} from '@angular/forms';
+import { MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class NoteComponent implements OnInit,OnDestroy {
@@ -15,7 +14,7 @@ export class NoteComponent implements OnInit,OnDestroy {
 
   //params: HttpParams  = new HttpParams().set('username',environment.databaseUsername).set('password',environment.databasePassword);
   constructor(private noteService: NotesService,
-    router: Router) {}
+    private matDialog: MatDialog, private formBuilder: FormBuilder) {}
   ngOnInit(): void {
     this.showNotes(); //Le digo que se suscriba al observable al iniciar
     //this.metodoBoludo();
@@ -32,16 +31,24 @@ export class NoteComponent implements OnInit,OnDestroy {
   }
 
  metodoBoludo():void {
-  let formData = new FormGroup( {
-      sarasa: new FormControl()
+  this.formBuilder.group({
+    id: [''],
+    title: ['', Validators.required],
+    content: ['', Validators.required]
   })
-  formData.patchValue({
-    sarasa: "hola"
-  });
 
-  console.log(JSON.stringify(formData.getRawValue())) //EJEMPLO DE STRINGIFICAR EL JSON SIN VOLVERTE LOCO
+  //this.formBuilder.patchValue({})
+
+  console.log(JSON.stringify(this.formBuilder)) //EJEMPLO DE STRINGIFICAR EL JSON SIN VOLVERTE LOCO
 
 }
+
+deleteNote(id: Number):void {
+  this.noteService.deleteNoteById(id).subscribe()
+}
+
+updateNote():void {
+  this.matDialog}
 
 
 

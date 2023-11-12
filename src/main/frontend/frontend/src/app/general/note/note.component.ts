@@ -7,8 +7,7 @@ import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.co
 
 @Component({
   selector: 'app-note',
-  templateUrl: './note.component.html',
-  changeDetection: ChangeDetectionStrategy.Default
+  templateUrl: './note.component.html'
 })
 export class NoteComponent implements OnInit,OnDestroy {
  protected notesArray: any[] = [] //Solo accessible en el mismo package

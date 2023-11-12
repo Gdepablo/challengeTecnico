@@ -4,8 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 
 @Component({
   selector: 'app-add-note',
-  templateUrl: './add-note.component.html',
-  styleUrls: ['./add-note.component.css']
+  templateUrl: './add-note.component.html'
 })
 export class AddNoteComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AddNoteComponent>, @Inject(MAT_DIALOG_DATA) private data: any, private formBuilder: FormBuilder, private dialog: MatDialog) {
@@ -19,7 +18,6 @@ export class AddNoteComponent implements OnInit {
       }
       this.categories = this.data.categories.map((category: any) => category.tag).join(',') //Formato para mostrar
       console.log(this.data.categories.map((category:any) => ({tag: category.tag.trim()}))) //Formato para enviar al back
-      console.log(this.categories)
       //console.log(this.formData.value.categories) Devuelve lo que está adentro del formBuilder de categories
       this.formData.patchValue({
         title: this.data.title,

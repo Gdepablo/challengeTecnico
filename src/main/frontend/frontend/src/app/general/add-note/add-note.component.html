@@ -1,8 +1,9 @@
-<mat-dialog-content>
+<mat-dialog-content class="fixed-top" style="margin-top: 200px;
+transition: filter 0.3s ease-in-out;">
   <h2 mat-dialog-title class="bg-info text-white">Add Notes</h2>
-  <div class="notes-box" style="display: inline-block;">
+  <div class="notes-box;" style="display: inline-block;" >
     <div class="notes-content">
-      <form action="javascript:void(0);" [formGroup]="formData">
+      <form [formGroup]="formData">
         <div class="row">
           <div class="col-md-12 mb-3">
             <div class="note-title">
@@ -23,7 +24,8 @@
             </div>
             <div class="note-description" *ngIf="categories.length == 0;" > <!-- va sin los () de función porque es un string, si fuese un array seria .length()-->
               <label>Categorias</label>
-              <textarea class="form-control" placeholder="Categories separated by comma" rows="3" [formGroup]="categories" formControlName="tag" ></textarea>
+              <textarea class="form-control" placeholder="Categories separated by comma" rows="3" [formControl]="$any(formData.get('categories.tag'))" ></textarea> <!-- el form control me ayuda con el nested form group. Y el any es porque sino se queja
+              el html de que no se qué de los tipos-->
             </div>
           </div>
         </div>
@@ -32,6 +34,6 @@
   </div>
 <mat-dialog-actions style="display: flex; justify-content: center;">
   <button [mat-dialog-close]="true" class="btn btn-danger">Discard</button>
-  <button class="btn btn-info" type="submit" (click)="onSubmit()">Add</button>
+  <button class="btn btn-info" type="submit" (click)="onSubmit()" [disabled]="!formData.valid" >Add</button>
 </mat-dialog-actions>
 </mat-dialog-content>

@@ -11,6 +11,7 @@ import { AddNoteComponent } from './general/add-note/add-note.component';
 })
 export class AppComponent{
   notes: any[] = []
+  opened: boolean = false;
 
   constructor(private matdialog: MatDialog) {
   }
@@ -18,11 +19,15 @@ export class AppComponent{
   openForm() {
     this.matdialog.closeAll()
     let dialogRef = this.matdialog.open(AddNoteComponent)
-    dialogRef.afterClosed().subscribe( (formData: any) => {
-      console.log(formData)
+    this.opened = true;
+    dialogRef.afterOpened().subscribe(() => this.opened = true)
+    dialogRef.afterClosed().subscribe( () => {
+      this.opened = false;
     }
     )
   }
+
+
 
 
 //No nos desuscribimos de un httpPost porque lo hace angular mismo

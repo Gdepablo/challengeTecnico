@@ -4,6 +4,7 @@ import { NotesService } from './notes.service';
 import {Validators, FormBuilder } from '@angular/forms';
 import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
 
+
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -31,7 +32,8 @@ export class NoteComponent implements OnInit,OnDestroy {
     this.noteService.observable.unsubscribe();
   }
 
-  metodoBoludo():void {
+
+ metodoBoludo():void {
     this.formBuilder.group({
       id: [''],
       title: ['', Validators.required],
@@ -51,6 +53,10 @@ export class NoteComponent implements OnInit,OnDestroy {
   updateNote(id: Number):void {
 
   }
+
+
+updateNote():void {
+  this.matDialog}
 
 
 

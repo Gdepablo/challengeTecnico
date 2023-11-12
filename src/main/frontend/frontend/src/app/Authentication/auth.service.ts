@@ -11,7 +11,7 @@ export class AuthService {
 
   loginDetectado: EventEmitter<any> = new EventEmitter<any>
 
-constructor(private http: HttpClient,private cookie: CookieService) {}
+constructor(private http: HttpClient) {}
 
 public login(username: String, password: String): Observable<Object> { //Notas del usuario logeado
 
@@ -23,11 +23,6 @@ public login(username: String, password: String): Observable<Object> { //Notas d
   return this.http.post(`${environment.apiUrl}/login`, {'username': username,
   'password': password}, { headers });
 
- }
-
- public isLoggedIn(): boolean {
- return this.cookie.check('JSESSIONID') //Si existe JSESSIONID quiere decir que esta logeado. Esto no es demasiado seguro pq te pueden crear una cookie JSESSIONID y entran igual
- //Cuando este todo terminado lo cambio a JWT. Me interesa terminar el front primero
  }
 
 }

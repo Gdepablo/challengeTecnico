@@ -15,8 +15,6 @@ import {HttpClientModule} from '@angular/common/http';
     NoteComponent
   ],
   providers: [
-    // Agrega MAT_DIALOG_DATA como proveedor
-    { provide: MAT_DIALOG_DATA, useValue: {} }, // Puedes usar un valor predeterminado vacío o configurar los valores iniciales según tus necesidades
   ],
 })
 export class GeneralModule {}

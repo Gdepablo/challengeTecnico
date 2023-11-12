@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,8 +20,6 @@ export class NotesService {
     const headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(username + ':' + password)})
     return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers});
    }
-
-
 
    public setNotes(notes: any[]) {
     this.notesArray = notes;

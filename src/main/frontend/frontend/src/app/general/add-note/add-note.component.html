@@ -17,9 +17,13 @@
             </div>
           </div>
           <div class="col-md-12">
-            <div class="note-description">
-              <label>Note Description</label>
-              <textarea class="form-control" placeholder="Categories separated by comma" rows="3" formControlName="categories"></textarea>
+            <div class="note-description" *ngIf="categories.length != 0;" > <!-- va sin los () de función porque es un string, si fuese un array seria .length()-->
+              <label>Categorias</label>
+              <textarea class="form-control" placeholder="Categories separated by comma" rows="3" formGroupName="categories" formControlName="tag" >{{categories}}</textarea>
+            </div>
+            <div class="note-description" *ngIf="categories.length == 0;" > <!-- va sin los () de función porque es un string, si fuese un array seria .length()-->
+              <label>Categorias</label>
+              <textarea class="form-control" placeholder="Categories separated by comma" rows="3" [formGroup]="categories" formControlName="tag" ></textarea>
             </div>
           </div>
         </div>
@@ -28,6 +32,6 @@
   </div>
 <mat-dialog-actions style="display: flex; justify-content: center;">
   <button [mat-dialog-close]="true" class="btn btn-danger">Discard</button>
-  <button class="btn btn-info" type="submit" (click)="onSubmit()" [disabled]="!formData.valid">Add</button>
+  <button class="btn btn-info" type="submit" (click)="onSubmit()">Add</button>
 </mat-dialog-actions>
 </mat-dialog-content>

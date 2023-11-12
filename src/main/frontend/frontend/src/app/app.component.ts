@@ -16,6 +16,7 @@ export class AppComponent{
   }
 
   openForm() {
+    this.matdialog.closeAll()
     let dialogRef = this.matdialog.open(AddNoteComponent)
     dialogRef.afterClosed().subscribe( (formData: any) => {
       console.log(formData)

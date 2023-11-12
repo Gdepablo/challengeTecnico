@@ -6,7 +6,6 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
-  styleUrls: ['./note.component.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class NoteComponent implements OnInit,OnDestroy {

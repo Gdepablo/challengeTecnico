@@ -1,7 +1,8 @@
+import { MatDialog } from '@angular/material/dialog';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { NotesService } from './notes.service';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {Validators, FormBuilder } from '@angular/forms';
+import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-note',
@@ -14,7 +15,7 @@ export class NoteComponent implements OnInit,OnDestroy {
 
   //params: HttpParams  = new HttpParams().set('username',environment.databaseUsername).set('password',environment.databasePassword);
   constructor(private noteService: NotesService,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder, private matDialog: MatDialog) {}
   ngOnInit(): void {
     this.showNotes(); //Le digo que se suscriba al observable al iniciar
     //this.metodoBoludo();
@@ -44,11 +45,11 @@ export class NoteComponent implements OnInit,OnDestroy {
   }
 
   deleteNote(id: Number):void {
-    this.noteService.deleteNoteById(id).subscribe()
+    this.matDialog.open(ConfirmDeleteComponent, {})
   }
 
   updateNote(id: Number):void {
-    //this.matDialog
+
   }
 
 

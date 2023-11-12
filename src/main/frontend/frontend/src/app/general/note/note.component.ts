@@ -55,9 +55,6 @@ export class NoteComponent implements OnInit,OnDestroy {
   }
 
 
-updateNote():void {
-  this.matDialog}
-
 
 
 

@@ -9,30 +9,25 @@ import { Observable } from 'rxjs';
 export class NotesService {
   //EL LOGIN DE SPRING SECURITY ACEPTA, PARA EL /login, QUERY PARAMS, Y PARA LO DEMAS BASIC AUTH POR ESO EL MAMBO.
   //Lo ideal seria tener definido el modelo en el front, pero no hay tiempo
-  private notesArray: any[] = [];
-  public observable: EventEmitter<any> = new EventEmitter();
 
 
   constructor(private http: HttpClient)
    {}
+   headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(environment.databaseUsername + ':' + environment.databasePassword)})
 
-   public getAllNotes(username: String, password: String): Observable<Object> { //Notas del usuario logeado
-    const headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(username + ':' + password)})
-    return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers});
+   public getAllNotes(): Observable<any> { //Notas del usuario logeado
+
+    return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers: this.headers});
    }
 
-   public setNotes(notes: any[]) {
-    this.notesArray = notes;
-   }
+   public deleteNoteById(id: Number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/notes/delete/${id}`, {headers:this.headers})}
 
-   public getNotes() {
-    return this.notesArray;
-   }
+  public updateNote(id: Number, data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/notes/update/${id}`,data, {headers:this.headers})
+  }
 
-   public deleteNoteById(id: Number) {
-    return this.http.delete(`${environment.apiUrl}/notes/delete/${id}`)}
-
-  public updateNote(id: Number, data: any) {
-    return this.http.put(`${environment.apiUrl}/notes/update/${id}`,data)
+  public getNoteById(id:Number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/notes/${id}`, {headers:this.headers})
   }
 }

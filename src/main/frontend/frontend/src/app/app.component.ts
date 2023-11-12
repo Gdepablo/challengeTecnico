@@ -2,29 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { NotesService } from './general/note/notes.service';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './Authentication/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNoteComponent } from './general/add-note/add-note.component';
 
 @Component({ //TODO: Cambiar selector y nombres
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   notes: any[] = []
 
-  constructor(private noteService: NotesService, private authService: AuthService) {}
-  ngOnInit(): void {
-    this.showNotes(); //Me muestra las notas al iniciar y no al clickear un boton.
+  constructor(private matdialog: MatDialog) {
   }
 
-
-  public showNotes() {
-    //get al back
-    this.noteService.getAllNotes(environment.databaseUsername,environment.databasePassword).subscribe(
-    (response:any) => {
-      this.notes = response; //Asignacion OK.
-      this.noteService.setNotes(response);
-      this.noteService.observable.emit(response);} //Le seteo las notas al server para compartirlas
-      ); //incluye el emit del server.
+  openForm() {
+    let dialogRef = this.matdialog.open(AddNoteComponent)
+    dialogRef.afterClosed().subscribe( (formData: any) => {
+      console.log(formData)
+    }
+    )
   }
+
 
 //No nos desuscribimos de un httpPost porque lo hace angular mismo
 }

@@ -38,6 +38,8 @@ public class NotesController {
         if (note == null) {
             throw new RequestBodyIsNullException("Request body is null"); //Lo atrapa el ControllerAdvice y devuelve un bad request.
         }
+        System.out.println("SOY EL ENDPOINT AAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(note);
         service.save(note); //Segun GPT Ai es mejor que reciba notesDTO que es el transfer object a pasarle la note directo.
         //Si no le pasas title y content crea la nota vacia. No se si esta bien, capaz podriamos hacer alguna validacion.
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -46,7 +48,7 @@ public class NotesController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<NoteDTO> deleteNote(@PathVariable int id) {
        service.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     } //OK. OK VALIDACIONES.
 
     @PutMapping("/update/{id}")
@@ -83,6 +85,13 @@ public class NotesController {
         return new ResponseEntity<>(service.findAllArchived(), HttpStatus.OK); //OK
     } //OK
 
+    @GetMapping(value="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(readOnly = true) //Medio innecesario esto pero bue
+    public ResponseEntity<NoteDTO> getNoteById(@PathVariable int id) {
+        return new ResponseEntity<>(service.getNotesById(id), HttpStatus.OK); //OK
+    }
+    // No pongo endpoint de todas las notas porque me parece innecesario, se supone que el usuario solo ve las activas o las inactivas,
+    //nunca ambas juntas, y en dado caso, sino usamos spread y concatenamos ambas listas en el front
     //Asumo que los get method no pueden fallar. Seria estupido que fallen a menos que haya algun error en mi codigo tipo loop infinito.
 
     //Los transactional read only son para mas performance segun lei en stack overflow.

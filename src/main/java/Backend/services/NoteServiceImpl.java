@@ -91,7 +91,9 @@ public class NoteServiceImpl implements NoteService {
     }
 
     public Note convertToNotes(NoteDTO noteDTO) {
+        System.out.println("MAPPER");
         return MHelpers.modelMapper().map(noteDTO, Note.class);
+
     }
 
     public NoteDTO convertToNotesDTO(Note note) {
@@ -99,7 +101,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void save(NoteDTO note) {
+    public void save(NoteDTO note) { //Se le pasan las categorias como un JSON con un tag adentro.
         Note newNote = this.convertToNotes(note);
         this.noteRepository.save(newNote);
 

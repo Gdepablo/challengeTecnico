@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import { Component, Inject } from "@angular/core";
 import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { NotesService } from "../general/note/notes.service";
@@ -14,9 +15,10 @@ export class ConfirmDeleteComponent { /** el MatDialog es un modal. */
      adentro del modal*/
   ) {}
 
-  onDeleteClick(): void {
-    let id = this.data;
-    this.notesService.deleteNoteById(id).subscribe();
+  async onDeleteClick(): Promise<void> {
+    let id = this.data.id;
+    await lastValueFrom(this.notesService.deleteNoteById(id))
+    window.alert("WAIT! I'm deleting the note!");
     this.dialogRef.closeAll(); //Ojo que esto cierra TODOS los modals. Si hay más de uno abierto, los cierra a todos.
     location.reload(); //Recarga la página
   }

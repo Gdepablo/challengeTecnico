@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,8 +21,6 @@ export class NotesService {
     return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers});
    }
 
-
-
    public setNotes(notes: any[]) {
     this.notesArray = notes;
    }
@@ -31,4 +28,11 @@ export class NotesService {
    public getNotes() {
     return this.notesArray;
    }
+
+   public deleteNoteById(id: Number) {
+    return this.http.delete(`${environment.apiUrl}/notes/delete/${id}`)}
+
+  public updateNote(id: Number, data: any) {
+    return this.http.put(`${environment.apiUrl}/notes/update/${id}`,data)
+  }
 }

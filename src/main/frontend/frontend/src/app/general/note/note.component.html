@@ -1,4 +1,4 @@
-<div style="display: inline-flex; flex-direction: row;">
+<div style="display: inline-flex; flex-direction: row;" [style.filter]="opened ? 'blur(5px)' : 'none'">
   <div *ngFor="let note of notesArray" class="card card-body" style="margin-right: 5px; width: 200px; position: relative;">
     <span class="side-stick"></span>
     <h5 class="note-title text-truncate w-75 mb-0">{{note.title}}</h5>
@@ -16,7 +16,7 @@
       <button class="mr-1" (click)="updateNote(note.id)"><i class="fa fa-edit edit-note" style="color: black; margin-right: 5px;"></i></button>
       <button class="mr-1" (click)="deleteNote(note.id)"><i class="fa fa-trash remove-note" style="color: black; margin-right: 5px;"></i></button>
     </div>
-
+  </div>
 </div>
 
 

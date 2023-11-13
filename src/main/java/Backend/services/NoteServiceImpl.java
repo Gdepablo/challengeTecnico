@@ -126,8 +126,8 @@ public class NoteServiceImpl implements NoteService {
         if(note.isEmpty()) {throw new NotFoundException("Note not found");}
         else {
         Note noOptionalNote = noOptionalNote(note);
-        noOptionalNote.setTitle(noOptionalNote.getTitle() + newNote.getTitle());
-        noOptionalNote.setContent(noOptionalNote.getContent() +newNote.getContent());
-        noOptionalNote.addCategories(newNote.getCategories());
+        noOptionalNote.setTitle(newNote.getTitle());
+        noOptionalNote.setContent(newNote.getContent());
+        noOptionalNote.updateCategories(newNote.getCategories());
         noteRepository.save(noOptionalNote);
     }}}

@@ -30,4 +30,13 @@ export class NotesService {
   public getNoteById(id:Number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/notes/${id}`, {headers:this.headers})
   }
+
+  public newNote(data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/notes/new`, data, {headers:this.headers})
+  }
+
+  public mapearJSON(data: any): any {
+    return data.categories.tag.split(',').map((tag: any) => ({ tag }));
+
+  }
 }

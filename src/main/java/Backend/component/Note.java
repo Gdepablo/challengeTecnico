@@ -43,4 +43,9 @@ public class Note implements Serializable {
         this.categories.addAll(newCategories);
     }
 
+    public void updateCategories(List<Category> categoriesToUpdate) {
+        this.categories.clear();
+        this.categories.addAll(categoriesToUpdate);
+    }
+
 }

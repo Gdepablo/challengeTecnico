@@ -18,8 +18,13 @@
     </button>
   </ul>
   <div class="col-md-4 mb-4">
-        <app-note *ngIf="opened == false"></app-note>
-        </div>
+    <div *ngIf="opened == true" [style.filter] = "'blur(5px)'">
+        <app-note ></app-note>
       </div>
+      <div *ngIf="opened == false" [style.filter] = "'none'">
+        <app-note ></app-note>
+      </div>
+      </div>
+    </div>
 </body>
 

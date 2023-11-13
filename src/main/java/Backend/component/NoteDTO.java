@@ -32,5 +32,6 @@ public class NoteDTO implements Serializable {
 
     //El método con list de categories (o list de JSON), lo brinda el Data de lombok. Mientras que yo uso
     //overload para poder usar un list de strings, que es lo que recibo del front. Lo podría hacer para recibir
-    //una lista de JSON, pero ni ganas.
+    //una lista de JSON, pero ni ganas. Al final sí hice que le pasara una lista de JSON de categorias para probar el
+    //Nested form builder, así que bueno, queda para la posteridad.
 }

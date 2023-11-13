@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
   templateUrl: './add-note.component.html'
 })
 export class AddNoteComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<AddNoteComponent>, @Inject(MAT_DIALOG_DATA) private data: any, private formBuilder: FormBuilder, private dialog: MatDialog) {
+  constructor(public dialogRef: MatDialogRef<AddNoteComponent>, @Inject(MAT_DIALOG_DATA) private data: any, private formBuilder: FormBuilder) {
   }
   name= 'Add'
   categories: any = []
@@ -17,12 +17,12 @@ export class AddNoteComponent implements OnInit {
         this.name= 'Update'
       }
       this.categories = this.data.categories.map((category: any) => category.tag).join(',') //Formato para mostrar
-      console.log(this.data.categories.map((category:any) => ({tag: category.tag.trim()}))) //Formato para enviar al back
+      //console.log(this.data.categories.map((category:any) => ({tag: category.tag.trim()}))) //Formato para enviar al back
       //console.log(this.formData.value.categories) Devuelve lo que está adentro del formBuilder de categories
       this.formData.patchValue({
         title: this.data.title,
         content: this.data.content,
-        //categories: {tag: this.categories} //Forma correcta de patchear un nested form group
+        categories: {tag: this.categories} //Forma correcta de patchear un nested form group
       })
   }
 
@@ -38,7 +38,7 @@ export class AddNoteComponent implements OnInit {
 
   onSubmit():void {
     this.dialogRef.close(this.formData.value);
-    this.dialog.closeAll();
+    console.log("En el onsubmit")
     console.log(this.formData.value)
   }
 

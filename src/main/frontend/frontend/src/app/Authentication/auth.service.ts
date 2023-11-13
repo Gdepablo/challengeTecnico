@@ -9,8 +9,6 @@ import { environment } from 'src/environments/environment.development';
 })
 export class AuthService {
 
-  loginDetectado: EventEmitter<any> = new EventEmitter<any>
-
 constructor(private http: HttpClient) {}
 
 public login(username: String, password: String): Observable<Object> { //Notas del usuario logeado

@@ -20,8 +20,6 @@ export class AuthComponent{
       this.authService.login(username, password).subscribe(
         () => {
         this.router.navigate([this.returnUrl]);
-
-
         },
       );
     }

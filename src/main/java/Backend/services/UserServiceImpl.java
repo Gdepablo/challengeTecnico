@@ -108,7 +108,6 @@ public class UserServiceImpl implements UserService , UserDetailsService { //El 
 
     public UserDTO getUserByUsername(String username) {
         Client client = userRepository.findByUsername(username);
-        System.out.println("El cliente es" + client + "Y el username que llego " + username);
 
         if(client == null) {
             throw new NotFoundException("User not found");

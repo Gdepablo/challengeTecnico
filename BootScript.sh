@@ -1,60 +1,94 @@
-sudo chmod 775 BootScript.sh
-sudo sed -i -e 's/\r$//' mvnw
+#!/bin/bash
+
+OS="$(uname -s)"
+ARCH="$(uname -m)"
+
+# To find a specific version and more visit
+
+# NODE js, https://nodejs.org/en/download
+NODE_VERSION="v20.9.0"
+
+#Maven, The Apache Maven Project, https://maven.apache.org/download.cgi
+MAVEN_VERSION="3.9.5"
+
+# JAVA by Azul (support ARM), https://www.azul.com/downloads/#zulu
+ZULU_VERSION="17.46.19"
+JDK_VERSION="17.0.9"
+
+function move_and_delete() {
+    sudo tar -xvf "$1" -C /opt;
+    rm -rf "$1"
+}
+
+function setup_os {
+    if [ "${OS}" == "Linux" ] && [ "${ARCH}" == "x86_64" ]; then
+        # jdk/maven environments
+        OS="linux"
+        ARCH="x64"
+        # node environmets
+        OS_NODE="linux"
+        FORMAT_COMPRESS_NODE="xz"
+    elif [ "${OS}" == "Darwin" ]; then
+        # jdk/maven environments
+        OS="macosx"
+        # node environmets
+        OS_NODE="darwin"
+        FORMAT_COMPRESS_NODE="gz"
+    else
+        echo "Not compatible"
+        exit 1
+    fi
+}
+
+function setup_environment() {
+    BASE_URL="$1"
+    FILENAME="$2"
+
+    curl --fail -O "${BASE_URL}/${FILENAME}"
+    move_and_delete "${FILENAME}" 
+}
 
 
-script_path=$(dirname "$0")
+function setup_jdk() {
+    setup_environment "https://cdn.azul.com/zulu/bin/" "zulu${ZULU_VERSION}-ca-jdk${JDK_VERSION}-${OS}_${ARCH}.tar.gz"
 
-if [ "$(uname -s)" == "Linux" ] || [ -f /etc/os-release ] && grep -q "NAME=.*Linux" /etc/os-release || [[ "$OSTYPE" == "linux"* ]] ;
-then
-# Run the .jar file
+    JAVA_HOME="/opt/zulu${ZULU_VERSION}-ca-jdk${JDK_VERSION}-${OS}_${ARCH}"
+}
 
-wget "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz" -P "$script_path/src/main/resources"
+function setup_maven() {
+    setup_environment "https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries" "apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 
-cd "$script_path/src/main/resources" || exit
+    M2_HOME="/opt/apache-maven-${MAVEN_VERSION}"
+}
 
-sudo tar -xvf openjdk-17.0.2_linux-x64_bin.tar.gz -C "$script_path/JDK"
 
-JAVA_HOME="$script_path/src/main/resources/JDK/jdk-17.0.2"
+function setup_node() {
+    setup_environment "https://nodejs.org/dist/${NODE_VERSION}" "node-${NODE_VERSION}-${OS_NODE}-${ARCH}.tar.${FORMAT_COMPRESS_NODE}"
 
-export JAVA_HOME
-# Build the project with maven
+    NODE_HOME="/opt/node-${NODE_VERSION}-${OS_NODE}-${ARCH}"
+}
 
-cd "$script_path/../../.."|| exit
+function run_frontend() {
+    FRONTEND_DIR="$(pwd)/src/main/frontend/frontend"
+    sudo npm install --prefix "${FRONTEND_DIR}"
+    npm run ng serve --prefix "${FRONTEND_DIR}" & 
+}
 
-./mvnw clean package
+function run_backend() {
+    sudo mvn clean package
+    java -jar target/*.jar 
+}
 
-sudo "$JAVA_HOME/bin/java" -jar "$script_path/target/pruebaTecnicaEnsolvers.jar"
+function main() { 
+    setup_os
+    setup_node
+    setup_maven
+    setup_jdk
 
-cd "src/main/frontend/frontend" || exit
+    export PATH="${JAVA_HOME}/bin:${M2_HOME}/bin:${NODE_HOME}/bin:${PATH}"
 
-ng serve
+    run_frontend 
+    run_backend 
+}
 
-elif [ "$(uname -s)" == "Darwin" ] || [ -f /etc/os-release ] && grep -q "NAME=.*Darwin" /etc/os-release || [[ "$OSTYPE" == "darwin"* ]];
-then
-
-curl -O "https://download.java.net/java/GA/jdk17.0.2/fdb695a9d9064ad6b064dc6df578380c/7/GPL/openjdk-17.0.2_macos-x64_bin.tar.gz" -o "$script_path/JDK/jdk-17.0.2"
-
-cd "$script_path/src/main/resources" || exit
-
-sudo tar -xvf openjdk-17.0.2_macos-x64_bin.tar.gz -C "$script_path/JDK"
-
-JAVA_HOME="$script_path/src/main/resources/JDK/./jdk-17.0.2.jdk/Contents/Home"
-
-export JAVA_HOME
-# Build the project with maven
-
-cd "$script_path/../../.."|| exit
-
-./mvnw clean package
-
-sudo "$JAVA_HOME/bin/java" -jar "$script_path/target/pruebaTecnicaEnsolvers.jar"
-
-brew install node
-npm install || exit
-
-cd "src/main/frontend/frontend" || exit
-
-ng serve
-
-else echo "This script does not support Windows-based Systems."
-fi
+main

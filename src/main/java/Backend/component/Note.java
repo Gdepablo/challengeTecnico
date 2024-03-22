@@ -20,7 +20,7 @@ public class Note implements Serializable {
     private String title;
     @Size(max = 5000)
     private String content;
-    private Boolean active = true; // true si esta activo, false si esta archivado
+    private Boolean active = true;
     @ManyToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     @JoinTable(name = "note_X_category",
             joinColumns = @JoinColumn(name = "note_id"),
@@ -30,7 +30,6 @@ public class Note implements Serializable {
     @JsonIgnore
     private Client creator;
 
-
     public void addCategory(Category newCategory) {
         this.categories.add(newCategory);
     }
@@ -39,13 +38,8 @@ public class Note implements Serializable {
         this.categories.remove(categoryForRemoval);
     }
 
-    public void addCategories(List<Category> newCategories) {
-        this.categories.addAll(newCategories);
-    }
-
     public void updateCategories(List<Category> categoriesToUpdate) {
         this.categories.clear();
         this.categories.addAll(categoriesToUpdate);
     }
-
 }

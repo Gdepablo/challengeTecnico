@@ -1,13 +1,16 @@
-<span style="display: inline-flexbox" >
-<div class="d-flex align-items-center justify-content-center">
-  <div class="text-center">
+<div style="justify-content: center; align-items: center">
+<div class="justify-content-center; align-items: center">
+  <div class="text-center" *ngIf="!clicked">
       <h2 class="mb-3 mt-3">Are you sure you want to delete the note?</h2>
-      <h5>This is IRREVERSIBLE</h5>
-      <div class="d-flex justify-content-center mt-3 mb-3 ml-0 mr-0">
-          <button class="btn btn-secondary mr-2" [mat-dialog-close]="true">CANCEL</button>
-          <button class="btn btn-danger" (click)="onDeleteClick()">DELETE</button>
+      <h5>This cannot be undone</h5>
+      <div class="d-flex justify-content-center">
+          <button class="btn btn-secondary mr-2 mb-3" [mat-dialog-close]="true">CANCEL</button>
+          <button class="btn btn-danger mb-3" (click)="onDeleteClick()">DELETE</button>
       </div>
   </div>
+  <div class="text-center" *ngIf="clicked">
+    <h2 class="mb-3 mt-3">Please, wait while we delete your note. Page will reload automatically when done</h2>
 </div>
-</span>
+</div>
+</div>
 

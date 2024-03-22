@@ -4,7 +4,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <style type="text/css">
     body{
-      background: #edf1f5;
+      background-color: #edf1f5;
     }
   </style>
 </head>
@@ -12,16 +12,24 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-  <ul class="nav-pills p-3 bg-white col-mb-3 rounded-pill">
-    <button class="nav-link rounded-pill d-flex px-2 px-md-3 mr-0 mr-md-2 active" (click)="openForm()">
-      <i class="icon-layers mr-1"></i><span class="d-none d-md-block">Add Note</span>
-    </button>
-  </ul>
+  <div class="container">
+    <ul class="nav-pills p-3 bg-white col-mb-3 rounded-pill d-flex justify-content-between">
+        <button class="nav-link rounded-pill d-flex px-2 px-md-3 mr-0 mr-md-2 active" (click)="openForm()">
+          <i class="icon-layers mr-1"></i><span class="d-none d-md-block">Add Note</span>
+        </button>
+        <button class="nav-link rounded-pill d-flex px-2 px-md-3 mr-0 mr-md-2 active" (click)="getActiveNotes()">
+          <i class="icon-layers mr-1"></i><span class="d-none d-md-block">Get Active</span>
+        </button>
+        <button class="nav-link rounded-pill d-flex px-2 px-md-3 mr-0 mr-md-2 active" (click)="getArchivedNotes()">
+          <i class="icon-layers mr-1"></i><span class="d-none d-md-block">Get Archived</span>
+        </button>
+    </ul>
+  </div>  
   <div class="col-md-4 mb-4">
-    <div *ngIf="opened == true" [style.filter] = "'blur(5px)'">
+    <div *ngIf="opened" [style.filter] = "'blur(5px)'">
         <app-note ></app-note>
       </div>
-      <div *ngIf="opened == false" [style.filter] = "'none'">
+      <div *ngIf="!opened" [style.filter] = "'none'">
         <app-note ></app-note>
       </div>
       </div>

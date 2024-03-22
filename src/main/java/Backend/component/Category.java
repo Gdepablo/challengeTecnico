@@ -19,11 +19,6 @@ public class Category implements Serializable {
     private int id;
     private String tag;
     @ManyToMany(mappedBy = "categories")
-    @JsonIgnore //Para que no haya recursion infinita.
+    @JsonIgnore
     private List<Note> notes = new ArrayList<>();
-
-    public Category(String tag) {
-        this.tag = tag;
-    }
-
 }

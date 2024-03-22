@@ -1,5 +1,5 @@
-<div style="display: inline-flex; flex-direction: row;" [style.filter]="opened ? 'blur(5px)' : 'none'">
-  <div *ngFor="let note of notesArray" class="card card-body" style="margin-right: 5px; width: 200px; position: relative;">
+<div style="display: inline-flex; flex-direction: row;">
+  <div *ngFor="let note of notesArray" class="card card-body" style="margin-right: 5px; width: 200px; position: relative; border-radius: 1rem;">
     <span class="side-stick"></span>
     <h5 class="note-title text-truncate w-75 mb-0">{{note.title}}</h5>
     <p class="note-date font-12 text-muted">{{note.date}}</p>
@@ -13,8 +13,9 @@
     </div>
   </div>
     <div class="d-flex align-items-center" style="bottom: 10px; right: 10px;">
-      <button class="mr-1" (click)="updateNote(note.id)"><i class="fa fa-edit edit-note" style="color: black; margin-right: 5px;"></i></button>
-      <button class="mr-1" (click)="deleteNote(note.id)"><i class="fa fa-trash remove-note" style="color: black; margin-right: 5px;"></i></button>
+      <button class="mr-1" (click)="updateNote(note.id)"><i class="fa fa-edit edit-note" style="color: black; margin-right: 1px;"></i></button>
+      <button class="mr-1" (click)="deleteNote(note.id)"><i class="fa fa-trash remove-note" style="color: black; margin-right: 1px;"></i></button>
+      <button class="mr-1" (click)="handleNoteStatus(note)"><i class="fa fa-archive arhive-note" style="color: black; margin-right: 1px;"></i></button>
     </div>
   </div>
 </div>

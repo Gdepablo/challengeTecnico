@@ -18,9 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:4200")
-@Controller //Se le deja controller para que renderice el html y no restController
+@Controller
 public class LoginController{
-
 
   private final CustomAuthProvider providerManager;
 
@@ -36,21 +35,22 @@ public class LoginController{
 
   @PostMapping("/login")
   public String login(@RequestBody LoginForm loginForm) {
-    try {
+      try {
       Authentication auth = providerManager.authenticate(
           new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
       SecurityContextHolder.getContext().setAuthentication(auth);
       return String.valueOf(HttpStatus.OK);}
-    catch (AuthenticationException e) {
+      catch (AuthenticationException e) {
       return "redirect:/notes";
-    }}
+      }
+  }
 
   @PostMapping("/logout")
   public String logout(HttpServletRequest request) {
     HttpSession session = request.getSession();
-    if (session != null) {
+      if (session != null) {
       session.invalidate();
-    }
+      }
     SecurityContextHolder.clearContext();
     return "redirect:/login";
   }

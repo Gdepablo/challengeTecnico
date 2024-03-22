@@ -1,9 +1,8 @@
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
-import { NotesService } from './notes.service';
-import {Validators, FormBuilder } from '@angular/forms';
-import { ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
-import { AddNoteComponent } from '../add-note/add-note.component';
+import {MatDialog } from '@angular/material/dialog';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NotesService } from './notes.service';
+import {ConfirmDeleteComponent } from 'src/app/confirm-delete/confirm-delete.component';
+import {AddNoteComponent } from '../add-note/add-note.component';
 import {lastValueFrom, mergeMap, of, switchMap } from 'rxjs';
 
 
@@ -11,18 +10,26 @@ import {lastValueFrom, mergeMap, of, switchMap } from 'rxjs';
   selector: 'app-note',
   templateUrl: './note.component.html'
 })
-export class NoteComponent implements OnInit {
- protected notesArray: any[] = [] //Solo accessible en el mismo package
+export class NoteComponent implements OnInit, OnDestroy {
+ protected notesArray: any[] = []
  opened = false;
+ noteArrayLength = 0
 
-  //params: HttpParams  = new HttpParams().set('username',environment.databaseUsername).set('password',environment.databasePassword);
   constructor(private noteService: NotesService, private matDialog: MatDialog) {}
-  ngOnInit(): void {
-    this.showNotes(); //Le digo que se suscriba al observable al iniciar
+  ngOnDestroy(): void {
+    this.noteService.bringNotes.unsubscribe();
+  }
+ 
+
+  ngOnInit(): void { //TODO: Fix.
+    this.noteService.bringNotes.subscribe((type: string) => {
+      type === 'archived' ? this.getArchivedNotes() : this.showNotes()
+    })
+    this.showNotes();
   }
 
   showNotes() {
-   this.noteService.getAllNotes().subscribe((data: any) => {
+   this.noteService.getAllActive().subscribe((data: any) => {
       this.notesArray = data;
    })
   }
@@ -36,7 +43,7 @@ export class NoteComponent implements OnInit {
     let dataRecibida;
     let dialogRef;
 
-    dataRecibida = await lastValueFrom(this.noteService.getNoteById(id)); //La llamada a la API es lentisima, no puedo hacer nada con eso
+    dataRecibida = await lastValueFrom(this.noteService.getNoteById(id));
     dialogRef = this.matDialog.open(AddNoteComponent, {data:
     {title: dataRecibida.title,
       content: dataRecibida.content,
@@ -46,17 +53,27 @@ export class NoteComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(
       switchMap((data: any) => {
-        // Procesar el cierre del diálogo y actualizar la propiedad "categories" del formulario
         this.opened = false;
         data.categories = this.noteService.mapearJSON(data);
-        // Realizar la operación de PUT y esperar a que se complete
         return this.noteService.updateNote(id, data);
       }),
-      mergeMap(() => { //Tenia bugeado el endpoint de update JAJA. Lo arreglé y ahora funciona
-        // Realizar otras acciones después de que la operación de PUT se haya completado
-        // Puedes devolver un observable vacío o realizar otras operaciones aquí
+      mergeMap(() => {
         location.reload()
-        return of(null); // Puedes devolver un observable vacío o realizar otras operaciones aquí
+        return of(null);
       })
     ).subscribe();
-  }}
+  }
+  getArchivedNotes() {
+    this.noteService.getAllArchived().subscribe((data: any) => {
+      this.notesArray = data;
+   })
+  }
+
+  handleNoteStatus(id: number) {
+   this.noteService.handleNoteStatus(id).subscribe();
+   window.alert("Your operation is being processed. Page will refresh automatically")
+   setTimeout(() => {
+    location.reload();
+   },3000)
+  }
+}

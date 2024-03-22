@@ -7,17 +7,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class NotesService {
-  //EL LOGIN DE SPRING SECURITY ACEPTA, PARA EL /login, QUERY PARAMS, Y PARA LO DEMAS BASIC AUTH POR ESO EL MAMBO.
-  //Lo ideal seria tener definido el modelo en el front, pero no hay tiempo
+  bringNotes = new EventEmitter<any>
 
-
-  constructor(private http: HttpClient)
-   {}
+  constructor(private http: HttpClient) {}
    headers = new HttpHeaders({'Authorization': 'Basic ' + btoa(environment.databaseUsername + ':' + environment.databasePassword)})
 
-   public getAllNotes(): Observable<any> { //Notas del usuario logeado
-
+   public getAllActive(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/notes/active`,{headers: this.headers});
+   }
+
+   public getAllArchived(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/notes/archived`,{headers: this.headers});
    }
 
    public deleteNoteById(id: Number): Observable<any> {
@@ -35,8 +35,15 @@ export class NotesService {
     return this.http.post(`${environment.apiUrl}/notes/new`, data, {headers:this.headers})
   }
 
-  public mapearJSON(data: any): any {
+  public mapearJSON(data: any): Observable<any> {
     return data.categories.tag.split(',').map((tag: any) => ({ tag }));
+  }
 
+  public handleNoteStatus(note: any): Observable<any> {
+    if(note.active == true)
+      return this.http.put(`${environment.apiUrl}/notes/archive/${note.id}`, {}, {headers:this.headers}) 
+    else {
+      return this.http.put(`${environment.apiUrl}/notes/unarchive/${note.id}`, {}, {headers:this.headers})
+    }
   }
 }

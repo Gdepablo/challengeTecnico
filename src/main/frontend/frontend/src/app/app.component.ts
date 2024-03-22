@@ -11,12 +11,13 @@ import { mergeMap, of, switchMap } from 'rxjs';
 export class AppComponent{
   notes: any[] = []
   opened: boolean = false;
+  showingActives: boolean = true;
 
   constructor(private matdialog: MatDialog, private notesService : NotesService) {
   }
 
   openForm() {
-    this.matdialog.closeAll() //Esto creo que no va
+    this.matdialog.closeAll()
     let dialogRef = this.matdialog.open(AddNoteComponent)
     this.opened = true;
     dialogRef.afterOpened().subscribe(() => this.opened = true)
@@ -30,6 +31,17 @@ export class AppComponent{
       location.reload()
       return of(null);
     })).subscribe()
-}}
-//No nos desuscribimos de un httpPost porque lo hace angular mismo
+}
+
+  getArchivedNotes() {
+    this.notesService.bringNotes.emit("archived");
+    this.showingActives = false;
+  }
+
+  getActiveNotes() {
+    this.notesService.bringNotes.emit("active");
+    this.showingActives = true;
+  }
+
+}
 

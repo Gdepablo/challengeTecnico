@@ -13,7 +13,6 @@ public class UserPrincipal implements UserDetails{
     private String password;
     private Date accountCreationDate = new Date();
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

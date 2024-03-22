@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-note',
@@ -16,13 +16,11 @@ export class AddNoteComponent implements OnInit {
       if(this.data.id !== undefined) {
         this.name= 'Update'
       }
-      this.categories = this.data.categories.map((category: any) => category.tag).join(',') //Formato para mostrar
-      //console.log(this.data.categories.map((category:any) => ({tag: category.tag.trim()}))) //Formato para enviar al back
-      //console.log(this.formData.value.categories) Devuelve lo que está adentro del formBuilder de categories
+      this.categories = this.data.categories.map((category: any) => category.tag).join(',')
       this.formData.patchValue({
         title: this.data.title,
         content: this.data.content,
-        categories: {tag: this.categories} //Forma correcta de patchear un nested form group
+        categories: {tag: this.categories}
       })
   }
 
@@ -38,8 +36,6 @@ export class AddNoteComponent implements OnInit {
 
   onSubmit():void {
     this.dialogRef.close(this.formData.value);
-    console.log("En el onsubmit")
-    console.log(this.formData.value)
   }
 
 }

@@ -9,10 +9,8 @@ import java.util.List;
 
 
 @Data
-public class CategoryDTO implements Serializable { //No se persiste no es necesario anotaciones de hibernate.
-
+public class CategoryDTO implements Serializable {
     private int id;
     private String tag;
     private List<Backend.component.Note> notes = new ArrayList<>();
-
 }

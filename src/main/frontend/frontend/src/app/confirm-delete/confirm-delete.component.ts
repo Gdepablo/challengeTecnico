@@ -7,19 +7,19 @@ import { NotesService } from "../general/note/notes.service";
   selector: "app-confirm-delete",
   templateUrl: "./confirm-delete.component.html",
 })
-export class ConfirmDeleteComponent { /** el MatDialog es un modal. */
+export class ConfirmDeleteComponent {
+  clicked = false;
   constructor(
     private dialogRef: MatDialog,
     private notesService: NotesService,
-    @Inject(MAT_DIALOG_DATA) private data: any, /** Acá recibe la data ADENTRO del modal, porque sí, le podés pasar data
-     adentro del modal*/
+    @Inject(MAT_DIALOG_DATA) private data: any
   ) {}
 
   async onDeleteClick(): Promise<void> {
+    this.clicked = true;
     let id = this.data.id;
     await lastValueFrom(this.notesService.deleteNoteById(id))
-    window.alert("WAIT! I'm deleting the note!");
-    this.dialogRef.closeAll(); //Ojo que esto cierra TODOS los modals. Si hay más de uno abierto, los cierra a todos.
-    location.reload(); //Recarga la página
+    this.dialogRef.closeAll();
+    location.reload();
   }
 }

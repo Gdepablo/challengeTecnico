@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notes/{noteId}/category") //No se si la ruta esta bien, o conviene otra cosa, pero es evidente que las categorias se agregan a una nota.
+@RequestMapping("/notes/{noteId}/category")
 @Data
 @CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
@@ -38,7 +38,7 @@ public class CategoryController {
        }
         categoryService.addCategory(noteId,categoryDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
-    } //Esto es para asociar la categoria a una nota. OK. OK VALIDACIONES.
+    }
 
 
     @DeleteMapping({"/delete/{idCategory}"})
@@ -46,10 +46,10 @@ public class CategoryController {
         categoryService.removeCategory(noteId, idCategory);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-    } //OK. OK VALIDACIONES.
+    }
 
     @GetMapping("/filter/{categoryId}")
-    public ResponseEntity<List<NoteDTO>> filterByCategory(@PathVariable int categoryId) { //No uso el id de la nota pero poco importa.
+    public ResponseEntity<List<NoteDTO>> filterByCategory(@PathVariable int categoryId) {
         List<NoteDTO> noteDTO = service.findAll();
         List<Note> allNotes = noteDTO.stream().map(service::convertToNotes).toList();
         Category category = categoryService.convertToCategory(categoryService.getCategoryById(categoryId));
@@ -57,6 +57,4 @@ public class CategoryController {
         return new ResponseEntity<>(noteFiltered.stream().map(service::convertToNotesDTO).toList(),HttpStatus.OK);
 
     }
-
-    //Podria poner para mostrar todas las categorias pero meeh. Es lo mismo solo q con GetMapping y eso.
 }
